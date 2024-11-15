@@ -1,0 +1,87 @@
+# apache_tis.yml
+
+- name: Config of the Apache server
+  hosts: webserver
+  become: true
+
+  vars:
+    apache_root: /var/www/html
+    apache_user: www-data
+    zip_files_path: html/archives/*.zip 
+
+  tasks:
+    - name: Install Apache (Debian/Ubuntu)
+      ansible.builtin.apt:
+        name: apache2
+        state: present
+
+    - name: Deploy the config file Apache
+      ansible.builtin.template:
+        src: templates/apache.conf.j2
+        dest: /etc/apache2/sites-available/000-default.conf
+      notify: Restart Apache
+
+    - name: Copy of the static files in the web repertory
+      ansible.builtin.copy:
+        src: html/index.html
+        dest: "{{ apache_root }}/index.html"
+        owner: "{{ apache_user }}"
+        group: "{{ apache_user }}"
+        mode: '0644'
+
+    - name: Copy the learn_more.html page to web root
+      ansible.builtin.copy:
+        src: html/learn_more.html
+        dest: "{{ apache_root }}/learn_more.html"
+        owner: "{{ apache_user }}"
+        group: "{{ apache_user }}"
+        mode: '0644'
+
+    - name: Create an archive directory for ZIP files
+      ansible.builtin.file:
+        path: "{{ apache_root }}/archives"
+        state: directory
+        owner: "{{ apache_user }}"
+        group: "{{ apache_user }}"
+        mode: '0755'
+
+    - name: Copy ZIP archives to the server
+      ansible.builtin.copy:
+        src: "{{ item }}"
+        dest: "{{ apache_root }}/archives/"
+        owner: "{{ apache_user }}"
+        group: "{{ apache_user }}"
+        mode: '0644'
+      loop: "{{ lookup('ansible.builtin.fileglob', zip_files_path, wantlist=True) }}"
+
+    - name: Generate the archives.html page dynamically
+      ansible.builtin.template:
+        src: templates/archives.html.j2
+        dest: "{{ apache_root }}/archives.html"
+        owner: "{{ apache_user }}"
+        group: "{{ apache_user }}"
+        mode: '0644'
+
+    - name: Create images directory on the server
+      ansible.builtin.file:
+        path: "{{ apache_root }}/images"
+        state: directory
+        owner: "{{ apache_user }}"
+        group: "{{ apache_user }}"
+        mode: '0755'
+
+    - name: Copy images directory contents to web root
+      ansible.builtin.copy:
+        src: html/images/
+        dest: "{{ apache_root }}/images/"
+        owner: "{{ apache_user }}"
+        group: "{{ apache_user }}"
+        mode: '0644'
+        remote_src: no
+
+  handlers:
+    - name: Restart Apache
+      ansible.builtin.service:
+        name: apache2
+        state: restarted
+      when: ansible_os_family == "Debian"
