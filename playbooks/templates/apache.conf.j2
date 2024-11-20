@@ -1,6 +1,12 @@
 # templates/apache.conf.j2
-<VirtualHost *:80>
+<VirtualHost *:443>
     DocumentRoot "{{ apache_root }}"
+    ServerName  "{{ server_name }}"
+
+    SSLEngine on
+    SSLCertificateFile      /etc/ssl/certs/ssl-cert-cloudflare.pem
+    SSLCertificateKeyFile   /etc/ssl/private/ssl-cert-cloudflare.key
+
     <Directory "{{ apache_root }}">
         AllowOverride None
         Require all granted

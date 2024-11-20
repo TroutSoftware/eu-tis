@@ -19,6 +19,9 @@
       ansible.builtin.template:
         src: templates/apache.conf.j2
         dest: /etc/apache2/sites-available/000-default.conf
+      vars:
+        server_name: https://eu-tis.trout.software/
+        apache_root: /var/www/html
       notify: Restart Apache
 
     - name: Copy of the static files in the web repertory
