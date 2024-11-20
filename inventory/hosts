@@ -1,2 +1,0 @@
-[webserver]
-server_apache ansible_host=159.69.251.75 ansible_user=root
