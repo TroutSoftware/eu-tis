@@ -81,7 +81,10 @@
         <h1>TIS Archives</h1>
         
         <!-- summary text -->
-        <p class="summary">Here is the list of our TIS data</p>
+        <p class="summary">
+            Here is the list of our TIS data<br>
+            password = malware
+        </p>
 
         <ul class="archive-list">
             {% for file in lookup('ansible.builtin.fileglob', 'html/archives/*.zip', wantlist=True) %}
