@@ -7,10 +7,29 @@
     SSLCertificateFile      /etc/ssl/certs/ssl-cert-cloudflare.pem
     SSLCertificateKeyFile   /etc/ssl/private/ssl-cert-cloudflare.key
 
+    # General configuration for the entire DocumentRoot
     <Directory "{{ apache_root }}">
         AllowOverride None
         Require all granted
     </Directory>
+
+    # Restrict access to the 'archives' directory with password protection
+    <Directory "{{ apache_root }}/archives">
+        AuthType Basic
+        AuthName "Restricted Archives"
+        AuthUserFile /etc/apache2/.htpasswd
+        Require valid-user
+    </Directory>
+
+    # Optional: Restrict access to a specific file, archives.html
+    <Files "archives.html">
+        AuthType Basic
+        AuthName "Restricted Page"
+        AuthUserFile /etc/apache2/.htpasswd
+        Require valid-user
+    </Files>
+
     ErrorLog /var/log/apache2/error.log
     CustomLog /var/log/apache2/access.log combined
 </VirtualHost>
+
