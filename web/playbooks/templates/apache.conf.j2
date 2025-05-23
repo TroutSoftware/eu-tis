@@ -1,7 +1,7 @@
 # templates/apache.conf.j2
 <VirtualHost *:443>
     DocumentRoot "{{ apache_root }}"
-    ServerName  "{{ server_name }}"
+    ServerName  eu-tis.trout.software
 
     SSLEngine on
     SSLCertificateFile      /etc/ssl/certs/ssl-cert-cloudflare.pem
@@ -32,4 +32,3 @@
     ErrorLog /var/log/apache2/error.log
     CustomLog /var/log/apache2/access.log combined
 </VirtualHost>
-

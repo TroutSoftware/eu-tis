@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TIS Archives</title>
+    <style>
+        /* General page styling */
+        @font-face {
+            font-family: 'Nunito Sans';
+            src: url('fonts/NunitoSans_10pt-Regular.ttf') format('truetype');
+            font-weight: 400;
+            font-style: normal;
+        }
+
+        @font-face {
+            font-family: 'Nunito Sans';
+            src: url('fonts/NunitoSans_10pt-Bold.ttf') format('truetype');
+            font-weight: 700;
+            font-style: normal;
+        }
+
+        body {
+            font-family: 'Nunito Sans', Arial, Helvetica, sans-serif;
+            background-color: #0b225b;
+            margin: 0;
+            padding: 20px 0; /* Add vertical padding */
+            display: flex;
+            justify-content: center;
+            align-items: flex-start; /* Align to top instead of center */
+            min-height: 100vh; /* Minimum height instead of fixed */
+        }
+
+        .container {
+            max-width: 800px;
+            width: 100%;
+            background-color: #eaf6ff;
+            padding: 30px 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            margin: 20px 0; /* Add margin to top and bottom */
+            overflow-y: auto; /* Enable vertical scrolling if needed */
+        }
+
+        h1 {
+            color: #2c3e50;
+            font-size: 2.5em;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        /* Add a style for the summary paragraph */
+        .summary {
+            font-size: 1.2em;
+            color: #7f8c8d;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .category {
+            margin-top: 30px;
+        }
+
+        .category h2 {
+            font-size: 1.8em;
+            color: #2c3e50;
+            margin-bottom: 15px;
+        }
+
+        .archive-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .archive-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px;
+            margin: 10px 0;
+            background-color: #f9f9f9;
+            border: 1px solid #e1e4e8;
+            border-radius: 5px;
+        }
+
+        .archive-item h2 {
+            font-size: 1.2em;
+            color: #333;
+            margin: 0;
+        }
+
+        .download-button {
+            text-decoration: none;
+            padding: 8px 16px;
+            color: #fff;
+            background-color: #2980b9;
+            border-radius: 5px;
+            font-weight: bold;
+            transition: background-color 0.3s ease;
+        }
+
+        .download-button:hover {
+            background-color: #3498db;
+        }
+
+        .logo {
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .soccer-logo {
+            max-width: 300px;
+            margin-bottom: 30px;
+        }
+                /* Title group */
+        .main-title-group {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .main-title-line {
+            font-size: 2.0em;
+            color: #2c3e50;
+            margin: 0;
+        }
+
+        .main-title-sub {
+            font-size: 2.0em;
+            color: #2c3e50;
+            margin: 5px 0 0;
+        }
+
+        /* Divider line */
+        .section-divider {
+            border: none;
+            border-top: 2px solid #ccc;
+            margin: 20px auto 30px;
+            width: 60%;
+        }
+
+        /* Responsive styles for smaller screens */
+        @media (max-width: 768px) {
+            .container {
+                width: 90%;
+                padding: 15px;
+            }
+
+            .main-title-line, .main-title-sub {
+                font-size: 1.8em;
+            }
+
+            .soccer-logo {
+                max-width: 200px;
+            }
+
+            .archive-item {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .download-button {
+                margin-top: 10px;
+                align-self: flex-end;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <img src="images/gliph-darkbg.png" alt="Soccer Logo" class="logo soccer-logo">
+        <div class="main-title-group">
+            <h1 class="main-title-line">TIS</h1>
+            <h2 class="main-title-sub">Archives</h2>
+        </div>
+        <hr class="section-divider">
+        <!-- summary text -->
+        <p class="summary">
+            Here is the list of our TIS data<br>
+            password = malware
+        </p>
+
+    <!-- Threat-Actors Category -->
+    <div class="category">
+        <h2>Threat-Actors</h2>
+        <ul class="archive-list">
+                            <li class="archive-item">
+                    <h2>Ransomhub_ransomware.zip</h2>
+                    <a href="/archives/threat-actors/Ransomhub_ransomware.zip" class="download-button" download>Download</a>
+                </li>
+                            <li class="archive-item">
+                    <h2>Akira_ransomware.zip</h2>
+                    <a href="/archives/threat-actors/Akira_ransomware.zip" class="download-button" download>Download</a>
+                </li>
+                            <li class="archive-item">
+                    <h2>Phobos_ransomware.zip</h2>
+                    <a href="/archives/threat-actors/Phobos_ransomware.zip" class="download-button" download>Download</a>
+                </li>
+                            <li class="archive-item">
+                    <h2>Lotus_Blossom.zip</h2>
+                    <a href="/archives/threat-actors/Lotus_Blossom.zip" class="download-button" download>Download</a>
+                </li>
+                    </ul>
+    </div>
+
+    <!-- Products Category -->
+    <div class="category">
+        <h2>Products</h2>
+        <ul class="archive-list">
+                            <li class="archive-item">
+                    <h2>PAN-OS.zip</h2>
+                    <a href="/archives/products/PAN-OS.zip" class="download-button" download>Download</a>
+                </li>
+                            <li class="archive-item">
+                    <h2>Sophos_firewall.zip</h2>
+                    <a href="/archives/products/Sophos_firewall.zip" class="download-button" download>Download</a>
+                </li>
+                            <li class="archive-item">
+                    <h2>Westermo_L210-F2G.zip</h2>
+                    <a href="/archives/products/Westermo_L210-F2G.zip" class="download-button" download>Download</a>
+                </li>
+                            <li class="archive-item">
+                    <h2>Forti-OS.zip</h2>
+                    <a href="/archives/products/Forti-OS.zip" class="download-button" download>Download</a>
+                </li>
+                    </ul>
+    </div>
+</body>
+</html>

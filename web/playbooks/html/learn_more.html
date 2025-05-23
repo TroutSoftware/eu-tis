@@ -5,9 +5,22 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Learn More - Threat Intelligence Sharing Platform</title>
     <style>
+        @font-face {
+            font-family: 'Nunito Sans';
+            src: url('fonts/NunitoSans_10pt-Regular.ttf') format('truetype');
+            font-weight: 400;
+            font-style: normal;
+        }
+
+        @font-face {
+            font-family: 'Nunito Sans';
+            src: url('fonts/NunitoSans_10pt-Bold.ttf') format('truetype');
+            font-weight: 700;
+            font-style: normal;
+        }
         body {
-            font-family: 'Arial', sans-serif;
-            background-color: #f4f7fa;
+            font-family: 'Nunito Sans', sans-serif;
+            background-color: #0b225b;
             margin: 0;
             padding: 0;
             color: #2c3e50;
@@ -17,7 +30,7 @@
             max-width: 800px;
             margin: 0 auto;
             padding: 20px;
-            background-color: #fff;
+            background-color: #eaf6ff;
             border-radius: 8px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
         }
@@ -34,6 +47,35 @@
             color: #2c3e50;
             margin-top: 20px;
         }
+
+        /* Title group */
+        .main-title-group {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        /* First line: Learn More */
+        .main-title-line {
+            font-size: 2.5em;
+            color: #2980b9;
+            margin: 0;
+        }
+
+        /* Second line: Threat Intelligence Sharing Platform */
+        .main-title-sub {
+            font-size: 1.8em;
+            color: #2c3e50;
+            margin: 5px 0 0;
+        }
+
+        /* Divider line */
+        .section-divider {
+            border: none;
+            border-top: 2px solid #ccc;
+            margin: 20px auto 60px;
+            width: 50%;
+        }
+
         p, li {
             font-size: 1.1em;
             color: #7f8c8d;
@@ -52,13 +94,29 @@
             border: 1px solid #ddd;
             border-radius: 8px;
         }
+        .logo {
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .soccer-logo {
+            max-width: 300px;
+            margin-bottom: 15px;
+        }
     </style>
 </head>
 <body>
     <div class="container">
+        <img src="images/gliph-darkbg.png" alt="Soccer Logo" class="logo soccer-logo">
         <!-- Titre principal en haut à gauche -->
-        <h1 class="main-title">Learn More - Threat Intelligence Sharing Platform</h1>
+        <div class="main-title-group">
+            <h1 class="main-title-line">Learn More</h1>
+            <h2 class="main-title-sub">Threat Intelligence Sharing Platform</h2>
+        </div>
         
+        <hr class="section-divider">
+
         <!-- Sous-titre pour SOCCER Project -->
         <h2 class="section-title">SOCCER Project</h2>
         <p>Recent events such as the global pandemic, geopolitical tensions, and the introduction of new internet technologies have elevated cybersecurity to the second most important risk worldwide. The project "Security Operation Centres Capacity Building for European Resilience - SOCCER" was established in response to the European call DIGITAL-ECCC-2022-CYBER-03-SOC - Capacity building of Security Operation Centres (SOCs). This project brings together a consortium of cyber and technology experts from Germany, France, Hungary, and Romania.</p>
@@ -90,8 +148,31 @@
         <p>By providing a repository of well-documented kill chains in a format compatible with existing tools, the platform strengthens collaboration between consortium members (objective #2 of the project) and potentially between European Security Operation Centers (SOCs) in the future. It serves as a neutral medium to describe attack patterns, enabling defenders to implement mitigations before an attack takes hold.</p>
         <p>The data set will grow to multi-terabyte levels due to the binary nature of the files. Trout Software will initially collect the kill chains during repository creation, and all consortium members will contribute equally as SOCs are ramped up.</p>
         <p>The Threat Intelligence Sharing Platform will facilitate knowledge sharing about cyber systems, support training for future cybersecurity analysts, and provide a foundation for evaluating the effectiveness of cybersecurity products and services (in line with the requirements of the Cyber Resilience Act). Using industry-standard formats and data from open research bodies, as well as research by consortium members, this platform will form the nucleus of a comprehensive database. The consortium also aims to extend database access to European institutions involved in cybersecurity training, including universities and commercial awareness programs.</p>
+    
     </div>
+
+    
 </body>
 </html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 

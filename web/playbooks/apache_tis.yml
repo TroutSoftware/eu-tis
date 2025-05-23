@@ -7,7 +7,7 @@
   vars:
     apache_root: /var/www/html
     apache_user: www-data
-    zip_files_path: html/archives/*.zip 
+    zip_files_path: html/archives/*.zip
 
   tasks:
     - name: Install Apache (Debian/Ubuntu)
@@ -40,7 +40,7 @@
         group: "{{ apache_user }}"
         mode: '0644'
 
-    - name: Create an archive directory for ZIP files
+    - name: Create main archive directory for ZIP files
       ansible.builtin.file:
         path: "{{ apache_root }}/archives"
         state: directory
@@ -48,14 +48,41 @@
         group: "{{ apache_user }}"
         mode: '0755'
 
-    - name: Copy ZIP archives to the server
+    - name: Create threat-actors subdirectory
+      ansible.builtin.file:
+        path: "{{ apache_root }}/archives/threat-actors"
+        state: directory
+        owner: "{{ apache_user }}"
+        group: "{{ apache_user }}"
+        mode: '0755'
+
+    - name: Create products subdirectory
+      ansible.builtin.file:
+        path: "{{ apache_root }}/archives/products"
+        state: directory
+        owner: "{{ apache_user }}"
+        group: "{{ apache_user }}"
+        mode: '0755'
+
+    - name: Copy threat-actors ZIP archives to the server
       ansible.builtin.copy:
         src: "{{ item }}"
-        dest: "{{ apache_root }}/archives/"
+        dest: "{{ apache_root }}/archives/threat-actors/"
         owner: "{{ apache_user }}"
         group: "{{ apache_user }}"
         mode: '0644'
-      loop: "{{ lookup('ansible.builtin.fileglob', zip_files_path, wantlist=True) }}"
+      with_fileglob:
+        - "/home/user/wk/eu-tis/zip/threat-actors/*.zip"
+
+    - name: Copy products ZIP archives to the server
+      ansible.builtin.copy:
+        src: "{{ item }}"
+        dest: "{{ apache_root }}/archives/products/"
+        owner: "{{ apache_user }}"
+        group: "{{ apache_user }}"
+        mode: '0644'
+      with_fileglob:
+        - "/home/user/wk/eu-tis/zip/products/*.zip"
 
     - name: Generate the archives.html page dynamically
       ansible.builtin.template:
@@ -64,6 +91,9 @@
         owner: "{{ apache_user }}"
         group: "{{ apache_user }}"
         mode: '0644'
+      vars:
+        threat_actors: "{{ lookup('ansible.builtin.fileglob', '/home/user/wk/eu-tis/zip/threat-actors/*.zip', wantlist=True) | map('basename') | list }}"
+        products: "{{ lookup('ansible.builtin.fileglob', '/home/user/wk/eu-tis/zip/products/*.zip', wantlist=True) | map('basename') | list }}"
 
     - name: Create images directory on the server
       ansible.builtin.file:
@@ -77,6 +107,23 @@
       ansible.builtin.copy:
         src: html/images/
         dest: "{{ apache_root }}/images/"
+        owner: "{{ apache_user }}"
+        group: "{{ apache_user }}"
+        mode: '0644'
+        remote_src: no
+
+    - name: Create fonts directory on the server
+      ansible.builtin.file:
+        path: "{{ apache_root }}/fonts"
+        state: directory
+        owner: "{{ apache_user }}"
+        group: "{{ apache_user }}"
+        mode: '0755'
+
+    - name: Copy fonts directory contents to web root
+      ansible.builtin.copy:
+        src: html/fonts/
+        dest: "{{ apache_root }}/fonts/"
         owner: "{{ apache_user }}"
         group: "{{ apache_user }}"
         mode: '0644'

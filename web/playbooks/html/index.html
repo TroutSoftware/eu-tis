@@ -6,9 +6,23 @@
     <title>Welcome to our Threat Intelligence Sharing Platform!</title>
     <style>
         /* Base styles for body and general layout */
+        @font-face {
+            font-family: 'Nunito Sans';
+            src: url('fonts/NunitoSans_10pt-Regular.ttf') format('truetype');
+            font-weight: 400;
+            font-style: normal;
+        }
+
+        @font-face {
+            font-family: 'Nunito Sans';
+            src: url('fonts/NunitoSans_10pt-Bold.ttf') format('truetype');
+            font-weight: 700;
+            font-style: normal;
+        }
+
         body {
-            font-family: 'Arial', sans-serif;
-            background-color: #f4f7fa;
+            font-family: 'Nunito Sans', sans-serif;
+            background-color: #0b225b;
             margin: 0;
             padding: 0;
             display: flex;
@@ -21,7 +35,7 @@
         .container {
             text-align: center;
             padding: 20px;
-            background-color: #fff;
+            background-color: #eaf6ff;
             border-radius: 8px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
             width: 80%;
@@ -47,7 +61,7 @@
 
         /* Button styles */
         .button-container {
-            margin-top: 20px;
+            margin-top: 30px;
             display: flex;
             justify-content: center;
             gap: 20px;
@@ -67,19 +81,43 @@
         .button:hover {
             background-color: #3498db;
         }
-
         /* Style for the logo image */
         .logo {
             display: block;
-            margin: 0 auto 20px;
-            max-width: 150px;  /* Adjust size as needed */
+            margin: auto;
+        }
+
+        /* Grouping the logos together */
+        .logo-group {
+            margin-bottom: 10px; /* Reduce space between logos and heading */
+        }
+
+        /* Individual logo spacing */
+        .soccer-logo {
+            max-width: 300px;
+            margin-bottom: 2px; /* Very close to trout logo */
+        }
+
+        .trout-logo {
+            max-width: 140px;
+            margin-bottom: 5px; /* Very close to the heading */
+        }
+
+        h1 {
+            color: #2c3e50;
+            font-size: 2.5em;
+            margin-top: 10px;  /* Was likely using a large default */
+            margin-bottom: 20px;
         }
     </style>
 </head>
 <body>
     <div class="container">
         <!-- Add image of trout logo here -->
-        <img src="images/trout_logo.png" alt="Trout Logo" class="logo">
+        <div class="logo-group">
+            <img src="images/soccer.png" alt="Soccer Logo" class="logo soccer-logo">
+            <img src="images/trout_logoRG.png" alt="Trout Logo" class="logo trout-logo">
+        </div>
 
         <h1>Welcome to our <span class="highlight">Threat Intelligence Sharing</span> Platform !</h1>
         <p>Hello and welcome to our platform for sharing threat intelligence signals. This site will serve as a repository for our TIS archives, so that SOCs and other cybersecurity players can use them to defend themselves against emerging threats.</p>
@@ -91,4 +129,3 @@
     </div>
 </body>
 </html>
-
