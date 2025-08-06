@@ -72,7 +72,7 @@
         group: "{{ apache_user }}"
         mode: '0644'
       with_fileglob:
-        - "/home/user/wk/eu-tis/zip/threat-actors/*.zip"
+        - "/home/user/wk/eu-tis-basile/zip/threat-actors/*.zip"
 
     - name: Copy products ZIP archives to the server
       ansible.builtin.copy:
@@ -82,7 +82,7 @@
         group: "{{ apache_user }}"
         mode: '0644'
       with_fileglob:
-        - "/home/user/wk/eu-tis/zip/products/*.zip"
+        - "/home/user/wk/eu-tis-basile/zip/products/*.zip"
 
     - name: Generate the archives.html page dynamically
       ansible.builtin.template:
@@ -92,8 +92,8 @@
         group: "{{ apache_user }}"
         mode: '0644'
       vars:
-        threat_actors: "{{ lookup('ansible.builtin.fileglob', '/home/user/wk/eu-tis/zip/threat-actors/*.zip', wantlist=True) | map('basename') | list }}"
-        products: "{{ lookup('ansible.builtin.fileglob', '/home/user/wk/eu-tis/zip/products/*.zip', wantlist=True) | map('basename') | list }}"
+         threat_actors: "{{ lookup('ansible.builtin.fileglob', '/home/user/wk/eu-tis-basile/zip/threat-actors/*.zip', wantlist=True) | map('basename') | list }}"
+         products: "{{ lookup('ansible.builtin.fileglob', '/home/user/wk/eu-tis-basile/zip/products/*.zip', wantlist=True) | map('basename') | list }}"
 
     - name: Create images directory on the server
       ansible.builtin.file:
