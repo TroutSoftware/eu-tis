@@ -1,0 +1,51 @@
+## To add to the files /etc/audit/rules.d
+
+## --- 7z ---
+-a always,exit -F path=/usr/bin/7z -F perm=x -F auid>=1000 -F auid!=4294967295 -k archive-tool-alert
+-a always,exit -F path=/usr/local/bin/7z -F perm=x -F auid>=1000 -F auid!=4294967295 -k archive-tool-alert
+-a always,exit -F path=/opt/7zip/7z -F perm=x -F auid>=1000 -F auid!=4294967295 -k archive-tool-alert
+-a always,exit -F path=/tmp/7z -F perm=x -F auid>=1000 -F auid!=4294967295 -k archive-tool-alert
+-a always,exit -F path=/home/user/7z -F perm=x -F auid>=1000 -F auid!=4294967295 -k archive-tool-alert
+-a always,exit -F path=/snap/bin/7z -F perm=x -F auid>=1000 -F auid!=4294967295 -k archive-tool-alert
+
+## --- zip ---
+-a always,exit -F path=/usr/bin/zip -F perm=x -F auid>=1000 -F auid!=4294967295 -k archive-tool-alert
+-a always,exit -F path=/usr/local/bin/zip -F perm=x -F auid>=1000 -F auid!=4294967295 -k archive-tool-alert
+-a always,exit -F path=/tmp/zip -F perm=x -F auid>=1000 -F auid!=4294967295 -k archive-tool-alert
+
+## --- rar ---
+-a always,exit -F path=/usr/bin/rar -F perm=x -F auid>=1000 -F auid!=4294967295 -k archive-tool-alert
+-a always,exit -F path=/usr/local/bin/rar -F perm=x -F auid>=1000 -F auid!=4294967295 -k archive-tool-alert
+-a always,exit -F path=/tmp/rar -F perm=x -F auid>=1000 -F auid!=4294967295 -k archive-tool-alert
+
+## --- tar ---
+-a always,exit -F path=/bin/tar -F perm=x -F auid>=1000 -F auid!=4294967295 -k archive-tool-alert
+-a always,exit -F path=/usr/local/bin/tar -F perm=x -F auid>=1000 -F auid!=4294967295 -k archive-tool-alert
+-a always,exit -F path=/snap/bin/tar -F perm=x -F auid>=1000 -F auid!=4294967295 -k archive-tool-alert
+
+## --- gzip ---
+-a always,exit -F path=/bin/gzip -F perm=x -F auid>=1000 -F auid!=4294967295 -k archive-tool-alert
+-a always,exit -F path=/usr/local/bin/gzip -F perm=x -F auid>=1000 -F auid!=4294967295 -k archive-tool-alert
+-a always,exit -F path=/tmp/gzip -F perm=x -F auid>=1000 -F auid!=4294967295 -k archive-tool-alert
+
+## --- bzip2 ---
+-a always,exit -F path=/bin/bzip2 -F perm=x -F auid>=1000 -F auid!=4294967295 -k archive-tool-alert
+-a always,exit -F path=/usr/local/bin/bzip2 -F perm=x -F auid>=1000 -F auid!=4294967295 -k archive-tool-alert
+-a always,exit -F path=/tmp/bzip2 -F perm=x -F auid>=1000 -F auid!=4294967295 -k archive-tool-alert
+
+# any executable launched from /tmp or /dev/shm (often used by attackers) :
+
+-a always,exit -F dir=/tmp -F perm=x -F auid>=1000 -F auid!=4294967295 -k suspicious-tmp-exec
+-a always,exit -F dir=/dev/shm -F perm=x -F auid>=1000 -F auid!=4294967295 -k suspicious-shm-exec
+
+
+# For every execcve and filterd by commands name 
+# Execve() executes the program referred to by pathname
+# Filter the logs (ausearch) for lines containing "7z", "zip", etc.
+# ⚠️ Disadvantage: very verbose, tons of logs → use with a SIEM or post-processed rules
+
+## ausearch -k suspicious-exec | grep -Ei '7z|zip|rar|tar|gzip|bzip2' ##
+
+###   -a always,exit -S execve -F auid>=1000 -F auid!=4294967295 -k suspicious-exec ###
+
+
