@@ -1,13 +1,13 @@
 {
     "type": "bundle",
-    "id": "bundle--b58b26a5-ba15-4129-820e-1d38247e1d0c",
+    "id": "bundle--b4b153e5-71ca-4dc4-a857-1411a0b69a04",
     "objects": [
         {
             "type": "attack-pattern",
             "spec_version": "2.1",
-            "id": "attack-pattern--a56c8566-2f19-4331-bb40-27aea20fa559",
-            "created": "2025-06-24T10:36:52.800842Z",
-            "modified": "2025-06-24T10:36:52.800842Z",
+            "id": "attack-pattern--112d3ec4-349d-41a7-8f1c-1409eea114c6",
+            "created": "2025-08-08T10:21:02.990752Z",
+            "modified": "2025-08-08T10:21:02.990752Z",
             "name": "Exploit Public-Facing Application",
             "description": "Avalanche is commonly exposed via web interfaces; unauthenticated attackers could exploit these path traversal flaws directly.",
             "kill_chain_phases": [
@@ -27,9 +27,9 @@
         {
             "type": "attack-pattern",
             "spec_version": "2.1",
-            "id": "attack-pattern--01605047-f13f-4238-ab83-c7c5085cfa9c",
-            "created": "2025-06-24T10:36:52.801362Z",
-            "modified": "2025-06-24T10:36:52.801362Z",
+            "id": "attack-pattern--e9c4e2a7-a0dd-4b70-a471-eb29ba54905f",
+            "created": "2025-08-08T10:21:02.991213Z",
+            "modified": "2025-08-08T10:21:02.991213Z",
             "name": "Valid Accounts",
             "description": "If sensitive credentials are extracted via traversal, attacker could create persistent admin sessions.",
             "kill_chain_phases": [
@@ -49,9 +49,9 @@
         {
             "type": "attack-pattern",
             "spec_version": "2.1",
-            "id": "attack-pattern--f33f579c-17ec-440a-8a64-a02e4f65ec66",
-            "created": "2025-06-24T10:36:52.80156Z",
-            "modified": "2025-06-24T10:36:52.80156Z",
+            "id": "attack-pattern--ffca1568-5ce9-49e6-8970-5ec394de83f3",
+            "created": "2025-08-08T10:21:02.991413Z",
+            "modified": "2025-08-08T10:21:02.991413Z",
             "name": "Remote System Discovery",
             "description": "Once internal files are exposed, attackers may enumerate systems, devices and networks.",
             "kill_chain_phases": [
@@ -71,9 +71,9 @@
         {
             "type": "attack-pattern",
             "spec_version": "2.1",
-            "id": "attack-pattern--d037d402-37eb-4ef9-9c00-c0612af5dc14",
-            "created": "2025-06-24T10:36:52.801748Z",
-            "modified": "2025-06-24T10:36:52.801748Z",
+            "id": "attack-pattern--038fe0c7-bc5e-4b72-b263-62c9ed8a5cfe",
+            "created": "2025-08-08T10:21:02.991595Z",
+            "modified": "2025-08-08T10:21:02.991595Z",
             "name": "Loss of availability / Loss of control",
             "description": "Sensitive leakage or configuration tampering could affect MDM functionality or operational environments.",
             "kill_chain_phases": [
@@ -93,154 +93,176 @@
         {
             "type": "indicator",
             "spec_version": "2.1",
-            "id": "indicator--330d599a-2bf9-43f8-bcbd-ecf62c75fb10",
-            "created": "2025-06-24T10:36:52.801961Z",
-            "modified": "2025-06-24T10:36:52.801961Z",
+            "id": "indicator--ed4c5157-a7a8-415e-999a-247337840ecd",
+            "created": "2025-08-08T10:21:02.9918Z",
+            "modified": "2025-08-08T10:21:02.9918Z",
             "name": "YARA Rule from string_match.yar",
             "pattern": "",
             "pattern_type": "yara",
-            "valid_from": "2025-06-24T10:36:52Z"
+            "valid_from": "2025-08-08T10:21:02Z"
         },
         {
             "type": "indicator",
             "spec_version": "2.1",
-            "id": "indicator--3095767b-8ef4-4836-a1b3-ace7af1868fc",
-            "created": "2025-06-24T10:36:52.802155Z",
-            "modified": "2025-06-24T10:36:52.802155Z",
+            "id": "indicator--d301fe4a-a06b-4e89-9211-23fbd1bb69b7",
+            "created": "2025-08-08T10:21:02.991975Z",
+            "modified": "2025-08-08T10:21:02.991975Z",
             "name": "YARA Rule from malware_rules.yar",
             "pattern": "",
             "pattern_type": "yara",
-            "valid_from": "2025-06-24T10:36:52Z"
+            "valid_from": "2025-08-08T10:21:02Z"
         },
         {
             "type": "indicator",
             "spec_version": "2.1",
-            "id": "indicator--1032e912-7ca1-48d7-9fe7-cbd702a9e3a5",
-            "created": "2025-06-24T10:36:52.803289Z",
-            "modified": "2025-06-24T10:36:52.803289Z",
+            "id": "indicator--de780d85-07b6-4b08-8e61-7197874ba11e",
+            "created": "2025-08-08T10:21:02.992989Z",
+            "modified": "2025-08-08T10:21:02.992989Z",
+            "name": "Fanotify rule from fainotify.py",
+            "pattern": "[file:name = 'fainotify.py']",
+            "pattern_type": "stix",
+            "pattern_version": "2.1",
+            "valid_from": "2025-08-08T10:21:02Z"
+        },
+        {
+            "type": "indicator",
+            "spec_version": "2.1",
+            "id": "indicator--c938a09e-fc43-4a74-9fac-eecca99347f9",
+            "created": "2025-08-08T10:21:02.997064Z",
+            "modified": "2025-08-08T10:21:02.997064Z",
             "name": "Executable sample: malware_sample2.py",
             "pattern": "[file:name = 'malware_sample2.py']",
             "pattern_type": "stix",
             "pattern_version": "2.1",
-            "valid_from": "2025-06-24T10:36:52Z"
+            "valid_from": "2025-08-08T10:21:02Z"
         },
         {
             "type": "indicator",
             "spec_version": "2.1",
-            "id": "indicator--653bac38-416a-4984-9e7d-59927ea5fbec",
-            "created": "2025-06-24T10:36:52.807561Z",
-            "modified": "2025-06-24T10:36:52.807561Z",
+            "id": "indicator--38fd9fe9-a90b-4af8-bcf6-e03986173c93",
+            "created": "2025-08-08T10:21:02.997884Z",
+            "modified": "2025-08-08T10:21:02.997884Z",
             "name": "Executable sample: malware_sample3.sh",
             "pattern": "[file:name = 'malware_sample3.sh']",
             "pattern_type": "stix",
             "pattern_version": "2.1",
-            "valid_from": "2025-06-24T10:36:52Z"
+            "valid_from": "2025-08-08T10:21:02Z"
         },
         {
             "type": "indicator",
             "spec_version": "2.1",
-            "id": "indicator--85f715b8-6e5a-490c-867c-f9f08f69e787",
-            "created": "2025-06-24T10:36:52.808161Z",
-            "modified": "2025-06-24T10:36:52.808161Z",
+            "id": "indicator--c88ce6d7-9c9e-401a-abcb-dacbaa3b35f0",
+            "created": "2025-08-08T10:21:02.99852Z",
+            "modified": "2025-08-08T10:21:02.99852Z",
             "name": "Executable sample: malware_sample.exe",
             "pattern": "[file:name = 'malware_sample.exe']",
             "pattern_type": "stix",
             "pattern_version": "2.1",
-            "valid_from": "2025-06-24T10:36:52Z"
+            "valid_from": "2025-08-08T10:21:02Z"
         },
         {
             "type": "indicator",
             "spec_version": "2.1",
-            "id": "indicator--1d6a7d27-249b-4641-beed-007f2012d3d3",
-            "created": "2025-06-24T10:36:52.808766Z",
-            "modified": "2025-06-24T10:36:52.808766Z",
+            "id": "indicator--fed25240-922b-4de0-b7e6-3ade03678697",
+            "created": "2025-08-08T10:21:02.998989Z",
+            "modified": "2025-08-08T10:21:02.998989Z",
             "name": "Executable sample: malware_sample4.bin",
             "pattern": "[file:name = 'malware_sample4.bin']",
             "pattern_type": "stix",
             "pattern_version": "2.1",
-            "valid_from": "2025-06-24T10:36:52Z"
+            "valid_from": "2025-08-08T10:21:02Z"
         },
         {
             "type": "indicator",
             "spec_version": "2.1",
-            "id": "indicator--8d58f53d-208a-4e7f-a9d8-a01b86debc2f",
-            "created": "2025-06-24T10:36:52.80939Z",
-            "modified": "2025-06-24T10:36:52.80939Z",
+            "id": "indicator--80d6e714-cde5-42a1-ab70-87b4fd741b73",
+            "created": "2025-08-08T10:21:02.999524Z",
+            "modified": "2025-08-08T10:21:02.999524Z",
             "name": "PCAP file: network_capture.pcap",
             "pattern": "[file:name = 'network_capture.pcap']",
             "pattern_type": "stix",
             "pattern_version": "2.1",
-            "valid_from": "2025-06-24T10:36:52Z"
+            "valid_from": "2025-08-08T10:21:02Z"
         },
         {
             "type": "relationship",
             "spec_version": "2.1",
-            "id": "relationship--cd37a3f8-f6b3-4b95-924f-9bdd3ac5cdea",
-            "created": "2025-06-24T10:36:52.810062Z",
-            "modified": "2025-06-24T10:36:52.810062Z",
+            "id": "relationship--d245f453-3f58-48e6-a9bf-8fd39cccdd88",
+            "created": "2025-08-08T10:21:03.000103Z",
+            "modified": "2025-08-08T10:21:03.000103Z",
             "relationship_type": "indicates",
-            "source_ref": "indicator--330d599a-2bf9-43f8-bcbd-ecf62c75fb10",
-            "target_ref": "attack-pattern--a56c8566-2f19-4331-bb40-27aea20fa559"
+            "source_ref": "indicator--ed4c5157-a7a8-415e-999a-247337840ecd",
+            "target_ref": "attack-pattern--112d3ec4-349d-41a7-8f1c-1409eea114c6"
         },
         {
             "type": "relationship",
             "spec_version": "2.1",
-            "id": "relationship--b949253f-602c-43fb-a136-f54ec22a511a",
-            "created": "2025-06-24T10:36:52.810425Z",
-            "modified": "2025-06-24T10:36:52.810425Z",
+            "id": "relationship--543b8b82-96d7-4ec9-a1b3-9d94e754fa85",
+            "created": "2025-08-08T10:21:03.000446Z",
+            "modified": "2025-08-08T10:21:03.000446Z",
             "relationship_type": "indicates",
-            "source_ref": "indicator--3095767b-8ef4-4836-a1b3-ace7af1868fc",
-            "target_ref": "attack-pattern--a56c8566-2f19-4331-bb40-27aea20fa559"
+            "source_ref": "indicator--d301fe4a-a06b-4e89-9211-23fbd1bb69b7",
+            "target_ref": "attack-pattern--112d3ec4-349d-41a7-8f1c-1409eea114c6"
         },
         {
             "type": "relationship",
             "spec_version": "2.1",
-            "id": "relationship--6a48d523-1296-4b48-bf16-68795ddf01df",
-            "created": "2025-06-24T10:36:52.810568Z",
-            "modified": "2025-06-24T10:36:52.810568Z",
+            "id": "relationship--2d30d897-5fc6-45d0-9075-cfde1fb356ba",
+            "created": "2025-08-08T10:21:03.000582Z",
+            "modified": "2025-08-08T10:21:03.000582Z",
             "relationship_type": "indicates",
-            "source_ref": "indicator--1032e912-7ca1-48d7-9fe7-cbd702a9e3a5",
-            "target_ref": "attack-pattern--a56c8566-2f19-4331-bb40-27aea20fa559"
+            "source_ref": "indicator--de780d85-07b6-4b08-8e61-7197874ba11e",
+            "target_ref": "attack-pattern--112d3ec4-349d-41a7-8f1c-1409eea114c6"
         },
         {
             "type": "relationship",
             "spec_version": "2.1",
-            "id": "relationship--b626ea5e-64f0-4b2b-b0ff-e28ba565cc12",
-            "created": "2025-06-24T10:36:52.81075Z",
-            "modified": "2025-06-24T10:36:52.81075Z",
+            "id": "relationship--50d47522-0638-4247-aaca-ed6ad78f001c",
+            "created": "2025-08-08T10:21:03.000709Z",
+            "modified": "2025-08-08T10:21:03.000709Z",
             "relationship_type": "indicates",
-            "source_ref": "indicator--653bac38-416a-4984-9e7d-59927ea5fbec",
-            "target_ref": "attack-pattern--a56c8566-2f19-4331-bb40-27aea20fa559"
+            "source_ref": "indicator--c938a09e-fc43-4a74-9fac-eecca99347f9",
+            "target_ref": "attack-pattern--112d3ec4-349d-41a7-8f1c-1409eea114c6"
         },
         {
             "type": "relationship",
             "spec_version": "2.1",
-            "id": "relationship--c54e1aa6-5256-40c9-8117-7dae09465e16",
-            "created": "2025-06-24T10:36:52.810956Z",
-            "modified": "2025-06-24T10:36:52.810956Z",
+            "id": "relationship--899a8709-930a-4811-a9e4-5d6aed841dd7",
+            "created": "2025-08-08T10:21:03.000826Z",
+            "modified": "2025-08-08T10:21:03.000826Z",
             "relationship_type": "indicates",
-            "source_ref": "indicator--85f715b8-6e5a-490c-867c-f9f08f69e787",
-            "target_ref": "attack-pattern--a56c8566-2f19-4331-bb40-27aea20fa559"
+            "source_ref": "indicator--38fd9fe9-a90b-4af8-bcf6-e03986173c93",
+            "target_ref": "attack-pattern--112d3ec4-349d-41a7-8f1c-1409eea114c6"
         },
         {
             "type": "relationship",
             "spec_version": "2.1",
-            "id": "relationship--444113e2-4521-4347-ac1d-5a8aef9fdf36",
-            "created": "2025-06-24T10:36:52.811182Z",
-            "modified": "2025-06-24T10:36:52.811182Z",
+            "id": "relationship--853cf530-2433-444b-8300-1768fbaaf3bc",
+            "created": "2025-08-08T10:21:03.000944Z",
+            "modified": "2025-08-08T10:21:03.000944Z",
             "relationship_type": "indicates",
-            "source_ref": "indicator--1d6a7d27-249b-4641-beed-007f2012d3d3",
-            "target_ref": "attack-pattern--a56c8566-2f19-4331-bb40-27aea20fa559"
+            "source_ref": "indicator--c88ce6d7-9c9e-401a-abcb-dacbaa3b35f0",
+            "target_ref": "attack-pattern--112d3ec4-349d-41a7-8f1c-1409eea114c6"
         },
         {
             "type": "relationship",
             "spec_version": "2.1",
-            "id": "relationship--0d882188-de33-455d-a6b2-d5ab7cc490be",
-            "created": "2025-06-24T10:36:52.811301Z",
-            "modified": "2025-06-24T10:36:52.811301Z",
+            "id": "relationship--87e63ddc-cb80-42cf-b81f-8750327f184e",
+            "created": "2025-08-08T10:21:03.001059Z",
+            "modified": "2025-08-08T10:21:03.001059Z",
             "relationship_type": "indicates",
-            "source_ref": "indicator--8d58f53d-208a-4e7f-a9d8-a01b86debc2f",
-            "target_ref": "attack-pattern--a56c8566-2f19-4331-bb40-27aea20fa559"
+            "source_ref": "indicator--fed25240-922b-4de0-b7e6-3ade03678697",
+            "target_ref": "attack-pattern--112d3ec4-349d-41a7-8f1c-1409eea114c6"
+        },
+        {
+            "type": "relationship",
+            "spec_version": "2.1",
+            "id": "relationship--e7e78b72-e3ef-4a88-8935-d94a6f9390fe",
+            "created": "2025-08-08T10:21:03.001176Z",
+            "modified": "2025-08-08T10:21:03.001176Z",
+            "relationship_type": "indicates",
+            "source_ref": "indicator--80d6e714-cde5-42a1-ab70-87b4fd741b73",
+            "target_ref": "attack-pattern--112d3ec4-349d-41a7-8f1c-1409eea114c6"
         }
     ]
 }

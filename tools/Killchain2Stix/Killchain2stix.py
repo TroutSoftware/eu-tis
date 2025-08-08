@@ -75,6 +75,20 @@ def parse_audit_logs(auditd_dir):
                         ))
     return indicators
 
+# Parse fanotify rules
+def parse_fanotify_rules(fanotify_dir):
+    indicators = []
+    for filename in os.listdir(fanotify_dir):
+        if filename.endswith(".py"):
+            pattern = f"[file:name = '{filename}']"
+            indicators.append(Indicator(
+                name=f"Fanotify rule from {filename}",
+                pattern=pattern,
+                pattern_type="stix",
+                valid_from=datetime.now(timezone.utc).replace(microsecond=0)
+            ))
+    return indicators
+
 # Parse binary samples
 def parse_bin_samples(samples_dir):
     indicators = []
@@ -113,6 +127,7 @@ if __name__ == "__main__":
     yara_dir = os.path.join(base_path, "detection", "yara")
     snort_dir = os.path.join(base_path, "detection", "snort")
     auditd_dir = os.path.join(base_path, "detection", "auditd")
+    fanotify_dir = os.path.join(base_path, "detection", "fainotify")
     samples_dir = os.path.join(base_path, "samples", "bin")
     pcaps_dir = os.path.join(base_path, "samples", "pcap")
     killchain_file = os.path.join(base_path, "killchain.md")
@@ -139,6 +154,7 @@ if __name__ == "__main__":
         parse_yara_rules(yara_dir) +
         parse_snort_rules(snort_dir) +
         parse_audit_logs(auditd_dir) +
+        parse_fanotify_rules(fanotify_dir) +
         parse_bin_samples(samples_dir) +
         parse_pcap_samples(pcaps_dir)
     )
