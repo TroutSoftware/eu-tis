@@ -80,7 +80,7 @@ config = {
   packages:
     - ifupdown
     - dnsmasq
-    - ufw
+    - nftables
 
   write_files:
     - path: /etc/dnsmasq.conf
@@ -109,27 +109,59 @@ config = {
       content: |
         net.ipv4.ip_forward=0
 
+    - path: /etc/nftables.conf
+      content: |
+        #!/usr/sbin/nft -f
+
+        flush ruleset
+
+        table inet filter {
+          chain input {
+            type filter hook input priority 0; policy drop;
+
+            # Allow loopback
+            iif lo accept
+
+            # Allow established and related connections
+            ct state established,related accept
+
+            # Allow DHCP (ports 67, 68)
+            udp dport { 67, 68 } accept
+
+            # Allow DNS (port 53)
+            tcp dport 53 accept
+            udp dport 53 accept
+
+            # Allow SSH for management
+            tcp dport 22 accept
+          }
+
+          chain forward {
+            type filter hook forward priority 0; policy drop;
+
+            # Block forwarding between WAN (eth0) and LAN (eth1)
+            iif eth1 oif eth0 drop
+            iif eth0 oif eth1 drop
+
+            # Allow forwarding within same network
+            iif eth1 oif eth1 accept
+            iif eth0 oif eth0 accept
+          }
+
+          chain output {
+            type filter hook output priority 0; policy accept;
+          }
+        }
+
   runcmd:
     - ip link set eth1 up
     - sleep 5  # Give eth1 time to initialize
     - systemctl restart networking
     - systemctl restart dnsmasq
-    
-    - iptables -A FORWARD -i eth1 -o eth0 -j DROP  
-    - iptables -A FORWARD -i eth0 -o eth1 -j DROP
-    
-    - iptables -A FORWARD -i eth1 -o eth1 -j ACCEPT  
-    - iptables -A FORWARD -i eth0 -o eth0 -j ACCEPT  
-  
-    - iptables -A INPUT -p udp --dport 67 -j ACCEPT  
-    - iptables -A INPUT -p udp --dport 68 -j ACCEPT  
-    - iptables -A INPUT -p udp --dport 53 -j ACCEPT  
-    - iptables -A INPUT -p tcp --dport 53 -j ACCEPT  
 
-    - iptables-save > /etc/iptables.rules
-    - echo '#!/bin/sh' > /etc/network/if-pre-up.d/iptables
-    - echo 'iptables-restore < /etc/iptables.rules' >> /etc/network/if-pre-up.d/iptables
-    - chmod +x /etc/network/if-pre-up.d/iptables
+    # Enable and start nftables
+    - systemctl enable nftables
+    - systemctl start nftables
 
   EOF
 }
@@ -149,60 +181,6 @@ config = {
     properties = {
       "parent"  = incus_network.lan.name
       "nictype" = "bridged"
-    }
-  }
-}
-
-resource "incus_instance" "trout" {
-  name   = "Trout-machine"
-  type   = "virtual-machine"
-  image  = "local:trout"
-  running = true
-
-  config = {
-    "security.secureboot" = "false"
-    "user.user-data" = <<EOF
-#cloud-config
-runcmd:
-  - dhclient eth0
-  - dhclient eth2
-  - dhclient eth3
-EOF
-  }
-
-  device {
-    name      = "eth0"
-    type      = "nic"
-    properties = {
-      parent  = incus_network.wan.name
-      nictype = "bridged"
-    }
-  }
-
-  device {
-    name      = "eth1"
-    type      = "nic"
-    properties = {
-      parent  = incus_network.lan.name
-      nictype = "bridged"
-    }
-  }
-
-  device {
-    name      = "eth2"
-    type      = "nic"
-    properties = {
-      parent  = incus_network.interco.name
-      nictype = "bridged"
-    }
-  }
-
-  device {
-    name      = "eth3"
-    type      = "nic"
-    properties = {
-      parent  = incus_network.admin.name
-      nictype = "bridged"
     }
   }
 }
@@ -284,9 +262,9 @@ resource "incus_instance" "dvwa" {
       - php-curl
       - unzip
       - wget
-      - php-mysql 
+      - php-mysql
       - php8.4-mysql
-      - ufw
+      - nftables
 
     bootcmd:
       - rm -f /etc/resolv.conf
@@ -325,15 +303,46 @@ resource "incus_instance" "dvwa" {
       - sed -i "s/display_errors = Off/display_errors = On/" /etc/php/8.4/apache2/php.ini
       - sed -i "s/display_startup_errors = Off/display_startup_errors = On/" /etc/php/8.4/apache2/php.ini
 
-      # Activer firewall et autoriser Apache
-      - ufw allow 80/tcp
-      - ufw allow 443/tcp
-      - ufw enable
+      # Configurer nftables pour autoriser Apache
+      - |
+        cat > /etc/nftables.conf << 'NFTEOF'
+        #!/usr/sbin/nft -f
+
+        flush ruleset
+
+        table inet filter {
+          chain input {
+            type filter hook input priority 0; policy accept;
+
+            # Allow loopback
+            iif lo accept
+
+            # Allow established and related connections
+            ct state established,related accept
+
+            # Allow HTTP and HTTPS
+            tcp dport { 80, 443 } accept
+
+            # Allow SSH for management
+            tcp dport 22 accept
+          }
+
+          chain forward {
+            type filter hook forward priority 0; policy accept;
+          }
+
+          chain output {
+            type filter hook output priority 0; policy accept;
+          }
+        }
+        NFTEOF
+
+      # Activer et démarrer nftables
+      - systemctl enable nftables
+      - systemctl start nftables
 
       # Ajouter une règle iptables pour assurer l’accès externe
-      - iptables -A INPUT -p tcp --dport 80 -j ACCEPT
-      - iptables -A INPUT -p tcp --dport 443 -j ACCEPT
-      - iptables-save > /etc/iptables.rules
+
 
       - cp /var/www/html/dvwa/config/config.inc.php.dist /var/www/html/dvwa/config/config.inc.php
 
