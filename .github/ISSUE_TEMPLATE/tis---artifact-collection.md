@@ -4,8 +4,8 @@ about: Collect artefacts linked to a CVE
 title: "[CVE]: Short Description"
 labels: ''
 assignees: ''
----
 
+---
 
 [A few words about the incident: attribution, articles, …]
 
