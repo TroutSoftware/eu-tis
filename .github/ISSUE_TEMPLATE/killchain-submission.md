@@ -12,8 +12,9 @@ assignees: ''
 Explain the situation in 2/3 paragraphs
 
 ## Mitre ATT&CK Mapping
-|--|--|--|--|
+
 | Tactic  |	Technique ID  |	Technique Name |	Context |
+| -- | -- | -- | -- |
 
 ## References
 
