@@ -17,11 +17,10 @@ resource "incus_network" "wan" {
   type = "bridge"
 
   config = {
-    "ipv4.dhcp"     = "true"   
+    "ipv4.dhcp"     = "true"
     "ipv4.address"  = "198.18.100.1/24"
     "ipv4.nat"      = "true"
     "ipv6.nat"      = "true"
-    "security.acls" = incus_network_acl.isolation.name
   }
 }
 
@@ -31,66 +30,47 @@ resource "incus_network" "lan" {
   type = "bridge"
 
   config = {
-    "ipv4.dhcp"     = "false" 
+    "ipv4.dhcp"     = "false"
     "ipv4.address"  = "198.18.200.1/24"
     "ipv4.nat"      = "true"
     "ipv6.address"  = "none"
-    "security.acls" = incus_network_acl.isolation.name
   }
 }
 
-# ACL pour isolation WAN/LAN
-resource "incus_network_acl" "isolation" {
-  name        = "isolation-acl"
-  description = "Isolation between WAN and LAN"
 
-  # Rules EGRESS
-  egress = [
-    {
-      action      = "drop"
-      state       = "enabled"
-      source      = "198.18.100.0/24"
-      destination = "198.18.200.0/24"
-      description = "Block WAN to LAN traffic"
-    },
-    {
-      action      = "drop"
-      state       = "enabled"
-      source      = "198.18.200.0/24"
-      destination = "198.18.100.0/24"
-      description = "Block LAN to WAN traffic"
-    },
-    {
-      action      = "allow"
-      state       = "enabled"
-      description = "Allow all other egress traffic (Internet)"
-    }
-  ]
-
-  # Rules INGRESS 
-  ingress = [
-    {
-      action      = "allow"
-      state       = "enabled"
-      description = "Allow all ingress traffic"
-    }
-  ]
-}
 
 ### INSTANCES ###
 
-# Router Container 
+# Router Container
 resource "incus_instance" "router" {
   name    = "Router-Firewall"
   image   = "images:debian/13/cloud"
   running = true
+  wait_for_network = false
 
   config = {
+    "user.network-config" = <<EOF
+version: 2
+ethernets:
+  eth0:
+    addresses:
+      - 198.18.100.254/24
+    routes:
+      - to: 0.0.0.0/0
+        via: 198.18.100.1
+    nameservers:
+      addresses: [8.8.8.8, 8.8.4.4]
+  eth1:
+    addresses:
+      - 198.18.200.10/24
+EOF
     "user.user-data" = <<EOF
 #cloud-config
 packages:
   - ifupdown
   - dnsmasq
+  - iptables
+  - iptables-persistent
 
 write_files:
   - path: /etc/dnsmasq.conf
@@ -107,23 +87,42 @@ write_files:
       server=8.8.8.8
       server=8.8.4.4
 
-  - path: /etc/network/interfaces
-    content: |
-      auto eth1
-      iface eth1 inet static
-      address 198.18.200.10
-      netmask 255.255.255.0
-      gateway 198.18.200.1
+
 
   - path: /etc/sysctl.conf
     content: |
-      net.ipv4.ip_forward=0
+      net.ipv4.ip_forward=1
+
+  - path: /etc/iptables/rules.v4
+    content: |
+      *filter
+      :INPUT ACCEPT [0:0]
+      :FORWARD DROP [0:0]
+      :OUTPUT ACCEPT [0:0]
+
+      # Allow established and related connections
+      -A FORWARD -m state --state ESTABLISHED,RELATED -j ACCEPT
+
+      # Block WAN (198.18.100.0/24) to LAN (198.18.200.0/24)
+      -A FORWARD -s 198.18.100.0/24 -d 198.18.200.0/24 -j DROP
+
+      # Block LAN (198.18.200.0/24) to WAN (198.18.100.0/24)
+      -A FORWARD -s 198.18.200.0/24 -d 198.18.100.0/24 -j DROP
+
+      # Allow LAN to Internet (not to WAN subnet)
+      -A FORWARD -s 198.18.200.0/24 -j ACCEPT
+
+      # Allow WAN to Internet (not to LAN subnet)
+      -A FORWARD -s 198.18.100.0/24 -j ACCEPT
+
+      COMMIT
 
 runcmd:
-  - ip link set eth1 up
   - sleep 5
-  - systemctl restart networking
+  - sysctl -p
   - systemctl restart dnsmasq
+  - iptables-restore < /etc/iptables/rules.v4
+  - systemctl enable netfilter-persistent
 EOF
   }
 
@@ -149,12 +148,31 @@ EOF
 # Attacker (WAN) #
 resource "incus_instance" "attacker" {
   name    = "Attacker"
-  image   = "images:kali/current/default"
+  image   = "images:debian/13/cloud"
   running = true
+
+  depends_on = [incus_instance.router]
 
   config = {
     "limits.cpu"    = "4"
     "limits.memory" = "8GiB"
+    "user.user-data" = <<EOF
+#cloud-config
+packages:
+  - iputils-ping
+  - tcpdump
+  - nmap
+  - curl
+  - wget
+
+runcmd:
+  # Add route to LAN network via Router-Firewall (IP fixe)
+  - sleep 5
+  - ip route add 198.18.200.0/24 via 198.18.100.254
+
+  # Make route persistent
+  - echo "up ip route add 198.18.200.0/24 via 198.18.100.254 2>/dev/null || true" >> /etc/network/interfaces
+EOF
   }
 
   device {
@@ -165,8 +183,6 @@ resource "incus_instance" "attacker" {
       parent  = incus_network.wan.name
     }
   }
-
-
 }
 
 # DVWA (LAN) #
