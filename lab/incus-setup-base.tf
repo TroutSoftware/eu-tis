@@ -145,9 +145,9 @@ EOF
   }
 }
 
-# Attacker (WAN) #
-resource "incus_instance" "attacker" {
-  name    = "Attacker"
+# Attacker external (WAN) #
+resource "incus_instance" "attacker-external" {
+  name    = "Attacker-external"
   image   = "images:debian/13/cloud"
   running = true
 
@@ -184,6 +184,36 @@ EOF
     }
   }
 }
+
+# Attacker internal (LAN) #
+resource "incus_instance" "attacker-internal" {
+  name    = "Attacker-internal"
+  image   = "images:debian/13/cloud"
+  running = true
+
+  device {
+    name = "eth0"
+    type = "nic"
+    properties = {
+      nictype = "bridged"
+      parent  = incus_network.lan.name
+    }
+  }
+
+  config = {
+    "user.user-data" = <<EOF
+#cloud-config
+bootcmd:
+  - rm -f /etc/resolv.conf
+  - echo "nameserver 198.18.200.1" > /etc/resolv.conf
+
+runcmd:
+  - dhclient eth0
+EOF
+  }
+}
+      
+
 
 # DVWA (LAN) #
 resource "incus_instance" "dvwa" {
