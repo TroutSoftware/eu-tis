@@ -1,0 +1,69 @@
+# 1. UNAUTHORIZED DHCP SERVER DETECTION
+
+alert ip !$Authorized_DHCP_Server 67 -> any 68 (
+  msg:"ROGUE DHCP - OFFER from Unauthorized server detected";
+  dhcp_option:53;
+  byte_test:1, =, 2;
+  dhcp_option:server_identifier;
+  sid:100001;
+  priority:1;
+)
+
+alert ip !$Authorized_DHCP_Server 67 -> any 68 (
+  msg:"ROGUE DHCP - ACK from Unauthorized server detected";
+  dhcp_option:53;
+  byte_test:1, =, 5;
+  dhcp_option:server_identifier;
+  sid:100002;
+  priority:1;
+)
+
+alert ip !$Authorized_DHCP_Server 67 -> any 68 (
+  msg:"ROGUE DHCP - NAK from Unauthorized server detected";
+  dhcp_option:53;
+  byte_test:1, =, 6;
+  dhcp_option:server_identifier;
+  sid:100003;
+  priority:2;
+)
+
+# 2. STARVATION ATTACKS
+
+# Detect excessive DHCP DISCOVERs (starvation attack or DISCOVER flood)
+alert ip any 68 -> any 67 (
+  msg:"ROGUE DHCP - Possible starvation attack (excessive DISCOVER)";
+  dhcp_option:53;
+  byte_test:1, =, 1;
+  detection_filter:track by_src, count 10, seconds 60;
+  sid:100020;
+  priority:1;
+)
+
+# Detect excessive DHCP OFFERs (starvation attack or OFFER flood)
+alert ip any 67 -> any 68 (
+  msg:"ROGUE DHCP - Excessive OFFERs detected (possible rogue server)";
+  dhcp_option:53;
+  byte_test:1, =, 2;
+  detection_filter:track by_src, count 10, seconds 60;
+  sid:100021;
+  priority:1;
+)
+
+# Detect excessive DHCP REQUESTs (starvation attack or REQUEST flood)
+alert ip any 68 -> any 67 (
+  msg:"ROGUE DHCP - Excessive REQUESTs detected (starvation attack)";
+  dhcp_option:53;
+  byte_test:1, =, 3;
+  detection_filter:track by_src, count 10, seconds 60;
+  sid:100022;
+  priority:1;
+)
+
+
+# 3. DHCP SERVER ON UNAUTHORIZED VLAN DETECTION USING DHCP_MONITOR PLUGIN
+alert ip any 67 -> any 68 (
+  msg:"ROGUE DHCP - DHCP from Unknown VLAN seen";
+  gid:8000;
+  sid:1003;
+  priority:1;
+)

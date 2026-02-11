@@ -1,0 +1,45 @@
+network = {
+  checksum_eval = 'none'
+}
+
+stream = { }
+stream_ip = { }
+stream_icmp = { }
+stream_tcp = { }
+stream_udp = { }
+stream_user = { }
+
+arp_spoof = { }
+
+appid = { }
+
+dhcp = {
+  header_parsing = true
+}
+dhcp_monitor = { }
+
+dns = { }
+normalizer = { }
+wizard = { }
+
+binder = {
+  { when = { proto = 'udp' }, use = { type = 'dhcp' } },
+}
+
+ips = {
+  include = 'DHCP-Rogue-detect.snort',
+  variables = {
+    nets = {
+      Authorized_DHCP_Server = '10.13.217.1',
+    }
+  }
+}
+
+default_classifications = {
+  { name = 'rogue-dhcp-server', priority = 1,
+    text = 'Unauthorized DHCP server detected' },
+  { name = 'dhcp-attack', priority = 1,
+    text = 'DHCP-based attack detected' },
+  { name = 'dhcp-anomaly', priority = 2,
+    text = 'Suspicious DHCP activity' }
+}
