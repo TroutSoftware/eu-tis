@@ -1,0 +1,34 @@
+stream = { }
+stream_ip = { }
+stream_icmp = { }
+stream_tcp = { }
+stream_udp = { }
+stream_user = { }
+stream_file = { }
+arp_spoof = { }
+
+http_inspect = { }
+
+dns = { }
+imap = { }
+normalizer = { }
+pop = { }
+rpc_decode = { }
+sip = { }
+ssh = { }
+ssl = { }
+telnet = { }
+
+wizard = {
+    spells = {
+        { service = 'http', proto = 'tcp', to_server = {'POST'}, to_client = {'HTTP/'} }
+    }
+}
+
+binder = {
+    { when = { service = 'XXXX' }, use = { type = 'XXXXX' } },
+    { use = { type = 'wizard' } }
+}
+
+ips = { include = 'Akira-detect.snort' }
+
