@@ -1,0 +1,21 @@
+domain-needed
+bogus-priv
+bind-interfaces
+cache-size=1000
+no-resolv
+
+interface=eth0
+interface=eth1
+interface=eth2
+interface=eth3
+interface=eth4
+
+listen-address=198.18.110.254
+listen-address=198.18.10.254
+listen-address=198.18.20.254
+listen-address=198.18.30.254
+listen-address=198.18.40.254
+
+{% for upstream in ics_router_dns_upstreams %}
+server={{ upstream }}
+{% endfor %}

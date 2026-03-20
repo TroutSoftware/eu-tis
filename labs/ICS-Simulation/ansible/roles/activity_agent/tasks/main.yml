@@ -1,0 +1,33 @@
+---
+- name: Install activity runner dependencies
+  ansible.builtin.apt:
+    name:
+      - openssh-client
+      - python3-yaml
+    state: present
+    update_cache: true
+    cache_valid_time: 3600
+
+- name: Create activity runner directory
+  ansible.builtin.file:
+    path: /opt/ics/activity
+    state: directory
+    owner: root
+    group: root
+    mode: "0755"
+
+- name: Install scenario definition
+  ansible.builtin.copy:
+    src: scenario.yaml
+    dest: /opt/ics/activity/scenario.yaml
+    owner: root
+    group: root
+    mode: "0644"
+
+- name: Install activity runner
+  ansible.builtin.copy:
+    src: activity_runner.py
+    dest: /opt/ics/activity/activity_runner.py
+    owner: root
+    group: root
+    mode: "0755"

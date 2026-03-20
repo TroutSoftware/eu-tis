@@ -1,0 +1,19 @@
+version: 2
+ethernets:
+%{ for iface in interfaces ~}
+  ${iface.name}:
+    dhcp4: false
+    dhcp6: false
+    addresses:
+      - ${iface.address}
+%{ if iface.gateway != null ~}
+    gateway4: ${iface.gateway}
+%{ endif ~}
+%{ if length(iface.dns_servers) > 0 ~}
+    nameservers:
+      addresses:
+%{ for dns_server in iface.dns_servers ~}
+        - ${dns_server}
+%{ endfor ~}
+%{ endif ~}
+%{ endfor ~}

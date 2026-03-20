@@ -1,0 +1,37 @@
+[global]
+  workgroup = WORKGROUP
+  server string = ICS Simulation File Server
+  security = user
+  map to guest = Bad User
+  guest account = nobody
+  load printers = no
+  printing = bsd
+  disable spoolss = yes
+  server min protocol = SMB2
+
+[Engineering]
+  path = /srv/ics-shares/Engineering
+  browseable = yes
+  read only = no
+  guest ok = yes
+  force user = lab
+  create mask = 0664
+  directory mask = 0775
+
+[Operations]
+  path = /srv/ics-shares/Operations
+  browseable = yes
+  read only = no
+  guest ok = yes
+  force user = lab
+  create mask = 0664
+  directory mask = 0775
+
+[Backups]
+  path = /srv/ics-shares/Backups
+  browseable = yes
+  read only = no
+  guest ok = yes
+  force user = lab
+  create mask = 0664
+  directory mask = 0775
