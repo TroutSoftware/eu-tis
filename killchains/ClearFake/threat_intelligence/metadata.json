@@ -1,0 +1,150 @@
+{
+  "type": "bundle",
+  "id": "bundle--c9b4f9c2-1f6b-4f63-9c9a-8a6b2b1f0001",
+  "spec_version": "2.1",
+  "objects": [
+{
+  "type": "identity",
+  "spec_version": "2.1",
+  "id": "identity--clearfake-community",
+  "created": "2026-01-29T00:00:00Z",
+  "modified": "2026-01-29T00:00:00Z",
+  "name": "Community Threat Intelligence",
+  "identity_class": "organization",
+  "roles": ["threat-intelligence"]
+},
+{
+  "type": "malware",
+  "spec_version": "2.1",
+  "id": "malware--clearfake",
+  "created": "2026-01-29T00:00:00Z",
+  "modified": "2026-01-29T00:00:00Z",
+  "created_by_ref": "identity--clearfake-community",
+  "name": "ClearFake",
+  "is_family": true,
+  "malware_types": ["downloader", "loader"],
+  "description": "ClearFake is a malicious JavaScript-based delivery framework injected into compromised legitimate websites. It profiles victims, retrieves staged configuration data from remote resources (including web services such as smart contract-based infrastructure like Binance Smart Chain), and facilitates user-assisted execution of downstream payloads. It does not act as a standalone malware but as a modular staging framework enabling dynamic payload delivery.",
+  "labels": ["delivery-framework", "javascript", "multi-stage"]
+},
+{
+  "type": "malware",
+  "spec_version": "2.1",
+  "id": "malware--amadey",
+  "created": "2026-01-29T00:00:00Z",
+  "modified": "2026-01-29T00:00:00Z",
+  "created_by_ref": "identity--clearfake-community",
+  "name": "Amadey",
+  "is_family": true,
+  "malware_types": ["trojan", "downloader"],
+  "description": "Amadey is a modular malware payload delivered downstream of ClearFake infections. It supports additional payload delivery, credential harvesting, persistence mechanisms, and command-and-control communication."
+},
+{
+  "type": "report",
+  "spec_version": "2.1",
+  "id": "report--clearfake-campaign",
+  "created": "2026-01-29T00:00:00Z",
+  "modified": "2026-01-29T00:00:00Z",
+  "created_by_ref": "identity--clearfake-community",
+  "name": "ClearFake Campaign – User-Assisted Drive-by Infection Framework",
+  "description": "This report documents the ClearFake campaign, which leverages malicious JavaScript injected into compromised legitimate websites. The framework retrieves staged configuration data from remote resources, including web services and smart contract-based infrastructure, to dynamically control payload delivery. It relies on user-assisted execution to transition from browser-based activity to endpoint compromise and deliver multiple downstream payloads such as Amadey.",
+  "report_types": ["threat-report"],
+  "published": "2026-01-29T00:00:00Z",
+  "object_refs": [
+    "malware--clearfake",
+    "malware--amadey"
+  ]
+},
+
+{
+  "type": "attack-pattern",
+  "spec_version": "2.1",
+  "id": "attack-pattern--T1189",
+  "name": "Drive-by Compromise",
+  "external_references": [
+    { "source_name": "mitre-attack", "external_id": "T1189" }
+  ]
+},
+{
+  "type": "attack-pattern",
+  "spec_version": "2.1",
+  "id": "attack-pattern--T1059-007",
+  "name": "Command and Scripting Interpreter: JavaScript",
+  "external_references": [
+    { "source_name": "mitre-attack", "external_id": "T1059.007" }
+  ]
+},
+{
+  "type": "attack-pattern",
+  "spec_version": "2.1",
+  "id": "attack-pattern--T1204",
+  "name": "User Execution",
+  "external_references": [
+    { "source_name": "mitre-attack", "external_id": "T1204" }
+  ]
+},
+{
+  "type": "attack-pattern",
+  "spec_version": "2.1",
+  "id": "attack-pattern--T1059-003",
+  "name": "Command and Scripting Interpreter: Windows Command Shell",
+  "external_references": [
+    { "source_name": "mitre-attack", "external_id": "T1059.003" }
+  ]
+},
+{
+  "type": "attack-pattern",
+  "spec_version": "2.1",
+  "id": "attack-pattern--T1059-001",
+  "name": "Command and Scripting Interpreter: PowerShell",
+  "external_references": [
+    { "source_name": "mitre-attack", "external_id": "T1059.001" }
+  ]
+},
+{
+  "type": "attack-pattern",
+  "spec_version": "2.1",
+  "id": "attack-pattern--T1105",
+  "name": "Ingress Tool Transfer",
+  "external_references": [
+    { "source_name": "mitre-attack", "external_id": "T1105" }
+  ]
+},
+{
+  "type": "attack-pattern",
+  "spec_version": "2.1",
+  "id": "attack-pattern--T1102",
+  "name": "Web Service",
+  "external_references": [
+    { "source_name": "mitre-attack", "external_id": "T1102" }
+  ]
+},
+{
+  "type": "attack-pattern",
+  "spec_version": "2.1",
+  "id": "attack-pattern--T1027-010",
+  "name": "Obfuscated Files or Information: Command Obfuscation",
+  "external_references": [
+    { "source_name": "mitre-attack", "external_id": "T1027.010" }
+  ]
+},
+{
+  "type": "attack-pattern",
+  "spec_version": "2.1",
+  "id": "attack-pattern--T1036",
+  "name": "Masquerading",
+  "external_references": [
+    { "source_name": "mitre-attack", "external_id": "T1036" }
+  ]
+},
+{
+  "type": "relationship",
+  "spec_version": "2.1",
+  "id": "relationship--clearfake-uses-t1102",
+  "relationship_type": "uses",
+  "source_ref": "malware--clearfake",
+  "target_ref": "attack-pattern--T1102",
+  "created": "2026-01-29T00:00:00Z",
+  "modified": "2026-01-29T00:00:00Z"
+}
+  ]
+}
