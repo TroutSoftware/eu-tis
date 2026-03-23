@@ -59,5 +59,12 @@ This repository contains all components required to document, analyze, and detec
 - **detection/yara/**  
   - YARA rule(s) for identifying ClearFake loader and downstream payload artifacts based on execution patterns, obfuscation, and anti-analysis behavior.
 
+---
+
+## References
+
+- Bridewell – *ClearFake Campaign: Fake Browser Updates and Malicious JavaScript*
+
+https://www.bridewell.com/insights/blogs/detail/clearfake-campaign
 
 ---
