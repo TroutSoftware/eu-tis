@@ -1,0 +1,134 @@
+{
+  "id": "attack-flow--lumma-fakecaptcha-001",
+  "type": "attack-flow",
+  "spec_version": "1.0",
+  "name": "Lumma Stealer via Fake CAPTCHA – SOC Synthetic Flow",
+  "description": "Simulated infection chain starting from a fake CAPTCHA page leading to Lumma Stealer execution and exfiltration.",
+  "created": "2025-11-25T12:00:00Z",
+  "modified": "2025-11-25T12:00:00Z",
+  "objects": [
+
+    {
+      "id": "node--1-initial-access",
+      "type": "attack-flow-node",
+      "name": "User visits compromised website",
+      "description": "User browses astapowerproject[.]net which redirects automatically.",
+      "technique_id": "T1189",
+      "spec_version": "1.0"
+    },
+
+    {
+      "id": "node--2-redirection-fakecaptcha",
+      "type": "attack-flow-node",
+      "name": "Fake CAPTCHA page loaded",
+      "description": "Browser lands on fake CAPTCHA at 657.s3.fr-par.scw[.]cloud via multiple redirects.",
+      "technique_id": "T1204",
+      "spec_version": "1.0"
+    },
+
+    {
+      "id": "node--3-user-execution",
+      "type": "attack-flow-node",
+      "name": "User executes PowerShell via Run dialog",
+      "description": "Fake CAPTCHA instructs user to press WIN+R and run the pasted PowerShell command.",
+      "technique_id": "T1204",
+      "spec_version": "1.0"
+    },
+
+    {
+      "id": "node--4-powershell-stage1",
+      "type": "attack-flow-node",
+      "name": "Obfuscated PowerShell one-liner executed",
+      "description": "Hidden PowerShell downloads a remote script via irm and executes it in memory.",
+      "technique_id": "T1059.001",
+      "spec_version": "1.0"
+    },
+
+    {
+      "id": "node--5-mshta-execution",
+      "type": "attack-flow-node",
+      "name": "mshta.exe executes remote HTML/JS payload",
+      "description": "PowerShell launches mshta.exe pointing to remote HTA/JS.",
+      "technique_id": "T1218.005",
+      "spec_version": "1.0"
+    },
+
+    {
+      "id": "node--6-download-afczip",
+      "type": "attack-flow-node",
+      "name": "Archive afc.zip downloaded",
+      "description": "Second stage downloads afc.zip into TEMP containing AF1.exe and DLLs.",
+      "technique_id": "T1105",
+      "spec_version": "1.0"
+    },
+
+    {
+      "id": "node--7-extract-execute-af1",
+      "type": "attack-flow-node",
+      "name": "AF1.exe executed",
+      "description": "AF1.exe (Lumma loader) executes from extracted directory.",
+      "technique_id": "T1059",
+      "spec_version": "1.0"
+    },
+
+    {
+      "id": "node--8-autoit-deci",
+      "type": "attack-flow-node",
+      "name": "AutoIt script deci.com runs",
+      "description": "Compiled AutoIt script automates credential theft and discovery.",
+      "technique_id": "T1059",
+      "spec_version": "1.0"
+    },
+
+    {
+      "id": "node--9-browser-credential-access",
+      "type": "attack-flow-node",
+      "name": "Browser credentials accessed",
+      "description": "Malware extracts Chrome/Edge Login Data and Web Data.",
+      "technique_id": "T1555.003",
+      "spec_version": "1.0"
+    },
+
+    {
+      "id": "node--10-firewall-discovery",
+      "type": "attack-flow-node",
+      "name": "Firewall profile discovery",
+      "description": "deci.com runs: findstr pfirewall.log & netsh advfirewall show currentprofile.",
+      "technique_id": "T1518.001",
+      "spec_version": "1.0"
+    },
+
+    {
+      "id": "node--11-c2-https",
+      "type": "attack-flow-node",
+      "name": "HTTPS C2 communication",
+      "description": "AF1.exe connects to Lumma C2 domains over HTTPS (e.g., blameaowi[.]run).",
+      "technique_id": "T1071.001",
+      "spec_version": "1.0"
+    },
+
+    {
+      "id": "node--12-exfiltration",
+      "type": "attack-flow-node",
+      "name": "Exfiltration over C2 channel",
+      "description": "Stolen credentials exfiltrated via HTTPS POST requests to C2.",
+      "technique_id": "T1041",
+      "spec_version": "1.0"
+    },
+
+    /* ==== RELATIONSHIPS ==== */
+
+    { "id": "rel--1", "type": "relationship", "relationship_type": "next", "source_ref": "node--1-initial-access", "target_ref": "node--2-redirection-fakecaptcha" },
+    { "id": "rel--2", "type": "relationship", "relationship_type": "next", "source_ref": "node--2-redirection-fakecaptcha", "target_ref": "node--3-user-execution" },
+    { "id": "rel--3", "type": "relationship", "relationship_type": "next", "source_ref": "node--3-user-execution", "target_ref": "node--4-powershell-stage1" },
+    { "id": "rel--4", "type": "relationship", "relationship_type": "next", "source_ref": "node--4-powershell-stage1", "target_ref": "node--5-mshta-execution" },
+    { "id": "rel--5", "type": "relationship", "relationship_type": "next", "source_ref": "node--5-mshta-execution", "target_ref": "node--6-download-afczip" },
+    { "id": "rel--6", "type": "relationship", "relationship_type": "next", "source_ref": "node--6-download-afczip", "target_ref": "node--7-extract-execute-af1" },
+    { "id": "rel--7", "type": "relationship", "relationship_type": "next", "source_ref": "node--7-extract-execute-af1", "target_ref": "node--8-autoit-deci" },
+    { "id": "rel--8", "type": "relationship", "relationship_type": "next", "source_ref": "node--8-autoit-deci", "target_ref": "node--9-browser-credential-access" },
+    { "id": "rel--9", "type": "relationship", "relationship_type": "next", "source_ref": "node--9-browser-credential-access", "target_ref": "node--10-firewall-discovery" },
+    { "id": "rel--10", "type": "relationship", "relationship_type": "next", "source_ref": "node--10-firewall-discovery", "target_ref": "node--11-c2-https" },
+    { "id": "rel--11", "type": "relationship", "relationship_type": "next", "source_ref": "node--11-c2-https", "target_ref": "node--12-exfiltration" }
+
+  ]
+}

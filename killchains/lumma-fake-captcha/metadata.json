@@ -1,0 +1,751 @@
+{
+  "type": "bundle",
+  "id": "bundle--7c5c7d28-7f9c-4a3e-9f0f-4c8a9c111001",
+  "spec_version": "2.1",
+  "objects": [
+    {
+      "type": "identity",
+      "spec_version": "2.1",
+      "id": "identity--c3f8f72e-2d66-4f7a-bf4e-2c733b700001",
+      "created": "2025-11-25T12:00:00Z",
+      "modified": "2025-11-25T12:00:00Z",
+      "name": "Internal SOC Team",
+      "identity_class": "organization",
+      "roles": [
+        "security-operations-center"
+      ],
+      "sectors": [
+        "technology"
+      ]
+    },
+    {
+      "type": "malware",
+      "spec_version": "2.1",
+      "id": "malware--e2f3d8d4-8f11-4e3d-9a9b-1234567890ab",
+      "created": "2025-11-25T12:03:00Z",
+      "modified": "2025-11-25T12:03:00Z",
+      "created_by_ref": "identity--c3f8f72e-2d66-4f7a-bf4e-2c733b700001",
+      "name": "Lumma Stealer",
+      "is_family": true,
+      "malware_types": [
+        "stealer"
+      ],
+      "description": "Credential and information stealing malware delivered via fake CAPTCHA and browser-based social engineering.",
+      "aliases": [
+        "Lumma",
+        "LummaC2"
+      ]
+    },
+    {
+      "type": "report",
+      "spec_version": "2.1",
+      "id": "report--a4d2e8c0-1c0f-4c1f-9c8b-0e0d90000001",
+      "created": "2025-11-25T12:05:00Z",
+      "modified": "2025-11-25T12:05:00Z",
+      "created_by_ref": "identity--c3f8f72e-2d66-4f7a-bf4e-2c733b700001",
+      "name": "Lumma Stealer via Fake CAPTCHA – SOC Synthetic Killchain",
+      "description": "Synthetic killchain modelling a Lumma Stealer infection on workstation HR-LAPTOP01 via a fake CAPTCHA page, including drive-by compromise, Run dialog abuse, PowerShell and mshta LOLBin usage, download and execution of AF1.exe, browser credential theft and HTTPS C2/exfiltration.",
+      "report_types": [
+        "intrusion-set",
+        "malware",
+        "attack-pattern"
+      ],
+      "published": "2025-11-25T12:05:00Z",
+      "object_refs": [
+        "identity--c3f8f72e-2d66-4f7a-bf4e-2c733b700001",
+        "malware--e2f3d8d4-8f11-4e3d-9a9b-1234567890ab",
+        "attack-pattern--11111111-0000-0000-0000-000000000189",
+        "attack-pattern--11111111-0000-0000-0000-000000000204",
+        "attack-pattern--11111111-0000-0000-0000-000000000559",
+        "attack-pattern--11111111-0000-0000-0000-000000001218",
+        "attack-pattern--11111111-0000-0000-0000-000000001105",
+        "attack-pattern--11111111-0000-0000-0000-000000001027",
+        "attack-pattern--11111111-0000-0000-0000-000000001555",
+        "attack-pattern--11111111-0000-0000-0000-000000001518",
+        "attack-pattern--11111111-0000-0000-0000-000000001071",
+        "attack-pattern--11111111-0000-0000-0000-000000001041",
+        "indicator--domain-astapowerproject",
+        "indicator--domain-eliteeyeview",
+        "indicator--domain-getitquickly",
+        "indicator--domain-fakecaptcha-s3",
+        "indicator--domain-2no",
+        "indicator--domain-blameaowi",
+        "indicator--domain-flowerexju",
+        "indicator--domain-mzmedtipp",
+        "indicator--domain-easterxeen",
+        "indicator--domain-araucahkbm",
+        "indicator--domain-overcovtcg",
+        "indicator--domain-blackswmxc",
+        "indicator--domain-posseswsnc",
+        "indicator--domain-4featurlyin",
+        "indicator--url-2no-2OArm3",
+        "indicator--url-2no-2Od3Q3",
+        "indicator--url-r2dev-afczip",
+        "indicator--url-blameaowi-twiu",
+        "indicator--url-flowerexju-lanz",
+        "indicator--url-mzmedtipp-mnvzx",
+        "indicator--url-easterxeen-zavc",
+        "indicator--url-araucahkbm-baneb",
+        "indicator--url-overcovtcg-juhd",
+        "indicator--url-blackswmxc-bgry",
+        "indicator--url-posseswsnc-akds",
+        "indicator--url-4featurlyin-akds",
+        "indicator--file-afczip",
+        "indicator--file-af1exe",
+        "indicator--file-iconxdll",
+        "indicator--file-dx0dll",
+        "indicator--file-directguidll"
+      ],
+      "labels": [
+        "lumma-stealer",
+        "fake-captcha",
+        "infostealer",
+        "soc-simulation"
+      ]
+    },
+
+    /* ATT&CK techniques */
+
+    {
+      "type": "attack-pattern",
+      "spec_version": "2.1",
+      "id": "attack-pattern--11111111-0000-0000-0000-000000000189",
+      "created": "2025-11-25T12:10:00Z",
+      "modified": "2025-11-25T12:10:00Z",
+      "name": "Drive-by Compromise",
+      "description": "User visits a compromised website that redirects to attacker-controlled content, leading to a fake CAPTCHA page.",
+      "external_references": [
+        {
+          "source_name": "mitre-attack",
+          "external_id": "T1189",
+          "url": "https://attack.mitre.org/techniques/T1189/"
+        }
+      ]
+    },
+    {
+      "type": "attack-pattern",
+      "spec_version": "2.1",
+      "id": "attack-pattern--11111111-0000-0000-0000-000000000204",
+      "created": "2025-11-25T12:10:01Z",
+      "modified": "2025-11-25T12:10:01Z",
+      "name": "User Execution (Fake CAPTCHA / Run dialog)",
+      "description": "Adversary relies on the user to run an obfuscated PowerShell command copied from a fake CAPTCHA page and executed via the Windows Run dialog.",
+      "external_references": [
+        {
+          "source_name": "mitre-attack",
+          "external_id": "T1204",
+          "url": "https://attack.mitre.org/techniques/T1204/"
+        }
+      ]
+    },
+    {
+      "type": "attack-pattern",
+      "spec_version": "2.1",
+      "id": "attack-pattern--11111111-0000-0000-0000-000000000559",
+      "created": "2025-11-25T12:10:02Z",
+      "modified": "2025-11-25T12:10:02Z",
+      "name": "PowerShell Download Cradle",
+      "description": "Hidden PowerShell one-liner downloads a second-stage script from a remote URL and executes it in memory.",
+      "external_references": [
+        {
+          "source_name": "mitre-attack",
+          "external_id": "T1059.001",
+          "url": "https://attack.mitre.org/techniques/T1059/001/"
+        }
+      ]
+    },
+    {
+      "type": "attack-pattern",
+      "spec_version": "2.1",
+      "id": "attack-pattern--11111111-0000-0000-0000-000000001218",
+      "created": "2025-11-25T12:10:03Z",
+      "modified": "2025-11-25T12:10:03Z",
+      "name": "Mshta Signed Binary Proxy Execution",
+      "description": "PowerShell launches mshta.exe to execute attacker-controlled remote HTML/JS as part of the infection chain.",
+      "external_references": [
+        {
+          "source_name": "mitre-attack",
+          "external_id": "T1218.005",
+          "url": "https://attack.mitre.org/techniques/T1218/005/"
+        }
+      ]
+    },
+    {
+      "type": "attack-pattern",
+      "spec_version": "2.1",
+      "id": "attack-pattern--11111111-0000-0000-0000-000000001105",
+      "created": "2025-11-25T12:10:04Z",
+      "modified": "2025-11-25T12:10:04Z",
+      "name": "Ingress Tool Transfer (afc.zip / AF1.exe)",
+      "description": "Second-stage script downloads afc.zip and transfers Lumma components (AF1.exe and DLLs) onto the endpoint.",
+      "external_references": [
+        {
+          "source_name": "mitre-attack",
+          "external_id": "T1105",
+          "url": "https://attack.mitre.org/techniques/T1105/"
+        }
+      ]
+    },
+    {
+      "type": "attack-pattern",
+      "spec_version": "2.1",
+      "id": "attack-pattern--11111111-0000-0000-0000-000000001027",
+      "created": "2025-11-25T12:10:05Z",
+      "modified": "2025-11-25T12:10:05Z",
+      "name": "Obfuscated Scripts and Payloads",
+      "description": "PowerShell commands and payload delivery chain are heavily obfuscated and wrapped to evade detection.",
+      "external_references": [
+        {
+          "source_name": "mitre-attack",
+          "external_id": "T1027",
+          "url": "https://attack.mitre.org/techniques/T1027/"
+        }
+      ]
+    },
+    {
+      "type": "attack-pattern",
+      "spec_version": "2.1",
+      "id": "attack-pattern--11111111-0000-0000-0000-000000001555",
+      "created": "2025-11-25T12:10:06Z",
+      "modified": "2025-11-25T12:10:06Z",
+      "name": "Credentials from Web Browsers",
+      "description": "Lumma accesses Chrome and Edge 'Login Data' and 'Web Data' files to harvest stored credentials.",
+      "external_references": [
+        {
+          "source_name": "mitre-attack",
+          "external_id": "T1555.003",
+          "url": "https://attack.mitre.org/techniques/T1555/003/"
+        }
+      ]
+    },
+    {
+      "type": "attack-pattern",
+      "spec_version": "2.1",
+      "id": "attack-pattern--11111111-0000-0000-0000-000000001518",
+      "created": "2025-11-25T12:10:07Z",
+      "modified": "2025-11-25T12:10:07Z",
+      "name": "Security Software / Firewall Discovery",
+      "description": "Malware runs findstr and netsh advfirewall commands to inspect firewall logging and the active firewall profile.",
+      "external_references": [
+        {
+          "source_name": "mitre-attack",
+          "external_id": "T1518.001",
+          "url": "https://attack.mitre.org/techniques/T1518/001/"
+        }
+      ]
+    },
+    {
+      "type": "attack-pattern",
+      "spec_version": "2.1",
+      "id": "attack-pattern--11111111-0000-0000-0000-000000001071",
+      "created": "2025-11-25T12:10:08Z",
+      "modified": "2025-11-25T12:10:08Z",
+      "name": "HTTPS C2 Communication",
+      "description": "Lumma establishes HTTPS-based C2 channels to multiple attacker-controlled domains (.run, .bet, .live, .top).",
+      "external_references": [
+        {
+          "source_name": "mitre-attack",
+          "external_id": "T1071.001",
+          "url": "https://attack.mitre.org/techniques/T1071/001/"
+        }
+      ]
+    },
+    {
+      "type": "attack-pattern",
+      "spec_version": "2.1",
+      "id": "attack-pattern--11111111-0000-0000-0000-000000001041",
+      "created": "2025-11-25T12:10:09Z",
+      "modified": "2025-11-25T12:10:09Z",
+      "name": "Exfiltration Over C2 Channel",
+      "description": "Stolen browser credentials and other data are exfiltrated via HTTPS POST requests over the existing C2 channel.",
+      "external_references": [
+        {
+          "source_name": "mitre-attack",
+          "external_id": "T1041",
+          "url": "https://attack.mitre.org/techniques/T1041/"
+        }
+      ]
+    },
+
+    /* Domain indicators */
+
+    {
+      "type": "indicator",
+      "spec_version": "2.1",
+      "id": "indicator--domain-astapowerproject",
+      "created": "2025-11-25T12:15:00Z",
+      "modified": "2025-11-25T12:15:00Z",
+      "created_by_ref": "identity--c3f8f72e-2d66-4f7a-bf4e-2c733b700001",
+      "name": "Compromised website astapowerproject[.]net",
+      "indicator_types": [
+        "malicious-activity"
+      ],
+      "pattern_type": "stix",
+      "pattern": "[domain-name:value = 'astapowerproject.net']",
+      "valid_from": "2025-05-13T00:00:00Z"
+    },
+    {
+      "type": "indicator",
+      "spec_version": "2.1",
+      "id": "indicator--domain-eliteeyeview",
+      "created": "2025-11-25T12:15:01Z",
+      "modified": "2025-11-25T12:15:01Z",
+      "created_by_ref": "identity--c3f8f72e-2d66-4f7a-bf4e-2c733b700001",
+      "name": "Redirect domain 871549.eliteeyeview[.]co",
+      "indicator_types": [
+        "malicious-activity"
+      ],
+      "pattern_type": "stix",
+      "pattern": "[domain-name:value = '871549.eliteeyeview.co']",
+      "valid_from": "2025-05-13T00:00:00Z"
+    },
+    {
+      "type": "indicator",
+      "spec_version": "2.1",
+      "id": "indicator--domain-getitquickly",
+      "created": "2025-11-25T12:15:02Z",
+      "modified": "2025-11-25T12:15:02Z",
+      "created_by_ref": "identity--c3f8f72e-2d66-4f7a-bf4e-2c733b700001",
+      "name": "Redirect domain myvantage.getitquickly[.]biz",
+      "indicator_types": [
+        "malicious-activity"
+      ],
+      "pattern_type": "stix",
+      "pattern": "[domain-name:value = 'myvantage.getitquickly.biz']",
+      "valid_from": "2025-05-13T00:00:00Z"
+    },
+    {
+      "type": "indicator",
+      "spec_version": "2.1",
+      "id": "indicator--domain-fakecaptcha-s3",
+      "created": "2025-11-25T12:15:03Z",
+      "modified": "2025-11-25T12:15:03Z",
+      "created_by_ref": "identity--c3f8f72e-2d66-4f7a-bf4e-2c733b700001",
+      "name": "Fake CAPTCHA host 657.s3.fr-par.scw[.]cloud",
+      "indicator_types": [
+        "malicious-activity"
+      ],
+      "pattern_type": "stix",
+      "pattern": "[domain-name:value = '657.s3.fr-par.scw.cloud']",
+      "valid_from": "2025-05-13T00:00:00Z"
+    },
+    {
+      "type": "indicator",
+      "spec_version": "2.1",
+      "id": "indicator--domain-2no",
+      "created": "2025-11-25T12:15:04Z",
+      "modified": "2025-11-25T12:15:04Z",
+      "created_by_ref": "identity--c3f8f72e-2d66-4f7a-bf4e-2c733b700001",
+      "name": "Short URL / redirector 2no[.]co",
+      "indicator_types": [
+        "malicious-activity"
+      ],
+      "pattern_type": "stix",
+      "pattern": "[domain-name:value = '2no.co']",
+      "valid_from": "2025-05-13T00:00:00Z"
+    },
+
+    {
+      "type": "indicator",
+      "spec_version": "2.1",
+      "id": "indicator--domain-blameaowi",
+      "created": "2025-11-25T12:15:10Z",
+      "modified": "2025-11-25T12:15:10Z",
+      "created_by_ref": "identity--c3f8f72e-2d66-4f7a-bf4e-2c733b700001",
+      "name": "Lumma C2 domain blameaowi[.]run",
+      "indicator_types": [
+        "command-and-control"
+      ],
+      "pattern_type": "stix",
+      "pattern": "[domain-name:value = 'blameaowi.run']",
+      "valid_from": "2025-05-13T00:00:00Z"
+    },
+    {
+      "type": "indicator",
+      "spec_version": "2.1",
+      "id": "indicator--domain-flowerexju",
+      "created": "2025-11-25T12:15:11Z",
+      "modified": "2025-11-25T12:15:11Z",
+      "created_by_ref": "identity--c3f8f72e-2d66-4f7a-bf4e-2c733b700001",
+      "name": "Lumma C2 domain flowerexju[.]bet",
+      "indicator_types": [
+        "command-and-control"
+      ],
+      "pattern_type": "stix",
+      "pattern": "[domain-name:value = 'flowerexju.bet']",
+      "valid_from": "2025-05-13T00:00:00Z"
+    },
+    {
+      "type": "indicator",
+      "spec_version": "2.1",
+      "id": "indicator--domain-mzmedtipp",
+      "created": "2025-11-25T12:15:12Z",
+      "modified": "2025-11-25T12:15:12Z",
+      "created_by_ref": "identity--c3f8f72e-2d66-4f7a-bf4e-2c733b700001",
+      "name": "Lumma C2 domain mzmedtipp[.]live",
+      "indicator_types": [
+        "command-and-control"
+      ],
+      "pattern_type": "stix",
+      "pattern": "[domain-name:value = 'mzmedtipp.live']",
+      "valid_from": "2025-05-13T00:00:00Z"
+    },
+    {
+      "type": "indicator",
+      "spec_version": "2.1",
+      "id": "indicator--domain-easterxeen",
+      "created": "2025-11-25T12:15:13Z",
+      "modified": "2025-11-25T12:15:13Z",
+      "created_by_ref": "identity--c3f8f72e-2d66-4f7a-bf4e-2c733b700001",
+      "name": "Lumma C2 domain easterxeen[.]run",
+      "indicator_types": [
+        "command-and-control"
+      ],
+      "pattern_type": "stix",
+      "pattern": "[domain-name:value = 'easterxeen.run']",
+      "valid_from": "2025-05-13T00:00:00Z"
+    },
+    {
+      "type": "indicator",
+      "spec_version": "2.1",
+      "id": "indicator--domain-araucahkbm",
+      "created": "2025-11-25T12:15:14Z",
+      "modified": "2025-11-25T12:15:14Z",
+      "created_by_ref": "identity--c3f8f72e-2d66-4f7a-bf4e-2c733b700001",
+      "name": "Lumma C2 domain araucahkbm[.]live",
+      "indicator_types": [
+        "command-and-control"
+      ],
+      "pattern_type": "stix",
+      "pattern": "[domain-name:value = 'araucahkbm.live']",
+      "valid_from": "2025-05-13T00:00:00Z"
+    },
+    {
+      "type": "indicator",
+      "spec_version": "2.1",
+      "id": "indicator--domain-overcovtcg",
+      "created": "2025-11-25T12:15:15Z",
+      "modified": "2025-11-25T12:15:15Z",
+      "created_by_ref": "identity--c3f8f72e-2d66-4f7a-bf4e-2c733b700001",
+      "name": "Lumma C2 domain overcovtcg[.]top",
+      "indicator_types": [
+        "command-and-control"
+      ],
+      "pattern_type": "stix",
+      "pattern": "[domain-name:value = 'overcovtcg.top']",
+      "valid_from": "2025-05-13T00:00:00Z"
+    },
+    {
+      "type": "indicator",
+      "spec_version": "2.1",
+      "id": "indicator--domain-blackswmxc",
+      "created": "2025-11-25T12:15:16Z",
+      "modified": "2025-11-25T12:15:16Z",
+      "created_by_ref": "identity--c3f8f72e-2d66-4f7a-bf4e-2c733b700001",
+      "name": "Lumma C2 domain blackswmxc[.]top",
+      "indicator_types": [
+        "command-and-control"
+      ],
+      "pattern_type": "stix",
+      "pattern": "[domain-name:value = 'blackswmxc.top']",
+      "valid_from": "2025-05-13T00:00:00Z"
+    },
+    {
+      "type": "indicator",
+      "spec_version": "2.1",
+      "id": "indicator--domain-posseswsnc",
+      "created": "2025-11-25T12:15:17Z",
+      "modified": "2025-11-25T12:15:17Z",
+      "created_by_ref": "identity--c3f8f72e-2d66-4f7a-bf4e-2c733b700001",
+      "name": "Lumma C2 domain posseswsnc[.]top",
+      "indicator_types": [
+        "command-and-control"
+      ],
+      "pattern_type": "stix",
+      "pattern": "[domain-name:value = 'posseswsnc.top']",
+      "valid_from": "2025-05-13T00:00:00Z"
+    },
+    {
+      "type": "indicator",
+      "spec_version": "2.1",
+      "id": "indicator--domain-4featurlyin",
+      "created": "2025-11-25T12:15:18Z",
+      "modified": "2025-11-25T12:15:18Z",
+      "created_by_ref": "identity--c3f8f72e-2d66-4f7a-bf4e-2c733b700001",
+      "name": "Lumma C2 domain 4featurlyin[.]top",
+      "indicator_types": [
+        "command-and-control"
+      ],
+      "pattern_type": "stix",
+      "pattern": "[domain-name:value = '4featurlyin.top']",
+      "valid_from": "2025-05-13T00:00:00Z"
+    },
+
+    /* URL indicators */
+
+    {
+      "type": "indicator",
+      "spec_version": "2.1",
+      "id": "indicator--url-2no-2OArm3",
+      "created": "2025-11-25T12:16:00Z",
+      "modified": "2025-11-25T12:16:00Z",
+      "created_by_ref": "identity--c3f8f72e-2d66-4f7a-bf4e-2c733b700001",
+      "name": "Short URL for PowerShell second-stage https://2no.co/2OArm3",
+      "indicator_types": [
+        "malicious-activity"
+      ],
+      "pattern_type": "stix",
+      "pattern": "[url:value = 'https://2no.co/2OArm3']",
+      "valid_from": "2025-05-13T00:00:00Z"
+    },
+    {
+      "type": "indicator",
+      "spec_version": "2.1",
+      "id": "indicator--url-2no-2Od3Q3",
+      "created": "2025-11-25T12:16:01Z",
+      "modified": "2025-11-25T12:16:01Z",
+      "created_by_ref": "identity--c3f8f72e-2d66-4f7a-bf4e-2c733b700001",
+      "name": "Short URL for HTA payload https://2no.co/2Od3Q3",
+      "indicator_types": [
+        "malicious-activity"
+      ],
+      "pattern_type": "stix",
+      "pattern": "[url:value = 'https://2no.co/2Od3Q3']",
+      "valid_from": "2025-05-13T00:00:00Z"
+    },
+    {
+      "type": "indicator",
+      "spec_version": "2.1",
+      "id": "indicator--url-r2dev-afczip",
+      "created": "2025-11-25T12:16:02Z",
+      "modified": "2025-11-25T12:16:02Z",
+      "created_by_ref": "identity--c3f8f72e-2d66-4f7a-bf4e-2c733b700001",
+      "name": "Archive download URL for afc.zip",
+      "indicator_types": [
+        "malicious-activity"
+      ],
+      "pattern_type": "stix",
+      "pattern": "[url:value = 'https://pub-24086c859ed94d628b911deba63401ab.r2.dev/afc.zip']",
+      "valid_from": "2025-05-13T00:00:00Z"
+    },
+
+    {
+      "type": "indicator",
+      "spec_version": "2.1",
+      "id": "indicator--url-blameaowi-twiu",
+      "created": "2025-11-25T12:16:10Z",
+      "modified": "2025-11-25T12:16:10Z",
+      "created_by_ref": "identity--c3f8f72e-2d66-4f7a-bf4e-2c733b700001",
+      "name": "Lumma C2 URL https://blameaowi.run/twiu",
+      "indicator_types": [
+        "command-and-control"
+      ],
+      "pattern_type": "stix",
+      "pattern": "[url:value = 'https://blameaowi.run/twiu']",
+      "valid_from": "2025-05-13T00:00:00Z"
+    },
+    {
+      "type": "indicator",
+      "spec_version": "2.1",
+      "id": "indicator--url-flowerexju-lanz",
+      "created": "2025-11-25T12:16:11Z",
+      "modified": "2025-11-25T12:16:11Z",
+      "created_by_ref": "identity--c3f8f72e-2d66-4f7a-bf4e-2c733b700001",
+      "name": "Lumma C2 URL https://flowerexju.bet/lanz",
+      "indicator_types": [
+        "command-and-control"
+      ],
+      "pattern_type": "stix",
+      "pattern": "[url:value = 'https://flowerexju.bet/lanz']",
+      "valid_from": "2025-05-13T00:00:00Z"
+    },
+    {
+      "type": "indicator",
+      "spec_version": "2.1",
+      "id": "indicator--url-mzmedtipp-mnvzx",
+      "created": "2025-11-25T12:16:12Z",
+      "modified": "2025-11-25T12:16:12Z",
+      "created_by_ref": "identity--c3f8f72e-2d66-4f7a-bf4e-2c733b700001",
+      "name": "Lumma C2 URL https://mzmedtipp.live/mnvzx",
+      "indicator_types": [
+        "command-and-control"
+      ],
+      "pattern_type": "stix",
+      "pattern": "[url:value = 'https://mzmedtipp.live/mnvzx']",
+      "valid_from": "2025-05-13T00:00:00Z"
+    },
+    {
+      "type": "indicator",
+      "spec_version": "2.1",
+      "id": "indicator--url-easterxeen-zavc",
+      "created": "2025-11-25T12:16:13Z",
+      "modified": "2025-11-25T12:16:13Z",
+      "created_by_ref": "identity--c3f8f72e-2d66-4f7a-bf4e-2c733b700001",
+      "name": "Lumma C2 URL https://easterxeen.run/zavc",
+      "indicator_types": [
+        "command-and-control"
+      ],
+      "pattern_type": "stix",
+      "pattern": "[url:value = 'https://easterxeen.run/zavc']",
+      "valid_from": "2025-05-13T00:00:00Z"
+    },
+    {
+      "type": "indicator",
+      "spec_version": "2.1",
+      "id": "indicator--url-araucahkbm-baneb",
+      "created": "2025-11-25T12:16:14Z",
+      "modified": "2025-11-25T12:16:14Z",
+      "created_by_ref": "identity--c3f8f72e-2d66-4f7a-bf4e-2c733b700001",
+      "name": "Lumma C2 URL https://araucahkbm.live/baneb",
+      "indicator_types": [
+        "command-and-control"
+      ],
+      "pattern_type": "stix",
+      "pattern": "[url:value = 'https://araucahkbm.live/baneb']",
+      "valid_from": "2025-05-13T00:00:00Z"
+    },
+    {
+      "type": "indicator",
+      "spec_version": "2.1",
+      "id": "indicator--url-overcovtcg-juhd",
+      "created": "2025-11-25T12:16:15Z",
+      "modified": "2025-11-25T12:16:15Z",
+      "created_by_ref": "identity--c3f8f72e-2d66-4f7a-bf4e-2c733b700001",
+      "name": "Lumma C2 URL https://overcovtcg.top/juhd",
+      "indicator_types": [
+        "command-and-control"
+      ],
+      "pattern_type": "stix",
+      "pattern": "[url:value = 'https://overcovtcg.top/juhd']",
+      "valid_from": "2025-05-13T00:00:00Z"
+    },
+    {
+      "type": "indicator",
+      "spec_version": "2.1",
+      "id": "indicator--url-blackswmxc-bgry",
+      "created": "2025-11-25T12:16:16Z",
+      "modified": "2025-11-25T12:16:16Z",
+      "created_by_ref": "identity--c3f8f72e-2d66-4f7a-bf4e-2c733b700001",
+      "name": "Lumma C2 URL https://blackswmxc.top/bgry",
+      "indicator_types": [
+        "command-and-control"
+      ],
+      "pattern_type": "stix",
+      "pattern": "[url:value = 'https://blackswmxc.top/bgry']",
+      "valid_from": "2025-05-13T00:00:00Z"
+    },
+    {
+      "type": "indicator",
+      "spec_version": "2.1",
+      "id": "indicator--url-posseswsnc-akds",
+      "created": "2025-11-25T12:16:17Z",
+      "modified": "2025-11-25T12:16:17Z",
+      "created_by_ref": "identity--c3f8f72e-2d66-4f7a-bf4e-2c733b700001",
+      "name": "Lumma C2 URL https://posseswsnc.top/akds",
+      "indicator_types": [
+        "command-and-control"
+      ],
+      "pattern_type": "stix",
+      "pattern": "[url:value = 'https://posseswsnc.top/akds']",
+      "valid_from": "2025-05-13T00:00:00Z"
+    },
+    {
+      "type": "indicator",
+      "spec_version": "2.1",
+      "id": "indicator--url-4featurlyin-akds",
+      "created": "2025-11-25T12:16:18Z",
+      "modified": "2025-11-25T12:16:18Z",
+      "created_by_ref": "identity--c3f8f72e-2d66-4f7a-bf4e-2c733b700001",
+      "name": "Lumma C2 URL https://4featurlyin.top/akds",
+      "indicator_types": [
+        "command-and-control"
+      ],
+      "pattern_type": "stix",
+      "pattern": "[url:value = 'https://4featurlyin.top/akds']",
+      "valid_from": "2025-05-13T00:00:00Z"
+    },
+
+    /* File hash indicators */
+
+    {
+      "type": "indicator",
+      "spec_version": "2.1",
+      "id": "indicator--file-afczip",
+      "created": "2025-11-25T12:17:00Z",
+      "modified": "2025-11-25T12:17:00Z",
+      "created_by_ref": "identity--c3f8f72e-2d66-4f7a-bf4e-2c733b700001",
+      "name": "Malicious archive afc.zip (SHA1)",
+      "indicator_types": [
+        "malicious-activity",
+        "file-hash-watchlist"
+      ],
+      "pattern_type": "stix",
+      "pattern": "[file:name = 'afc.zip' AND file:hashes.'SHA-1' = '5ceb5281b941699aacc2ea347494863cff583adf']",
+      "valid_from": "2025-05-13T00:00:00Z"
+    },
+    {
+      "type": "indicator",
+      "spec_version": "2.1",
+      "id": "indicator--file-af1exe",
+      "created": "2025-11-25T12:17:01Z",
+      "modified": "2025-11-25T12:17:01Z",
+      "created_by_ref": "identity--c3f8f72e-2d66-4f7a-bf4e-2c733b700001",
+      "name": "Lumma loader AF1.exe (SHA1)",
+      "indicator_types": [
+        "malicious-activity",
+        "file-hash-watchlist"
+      ],
+      "pattern_type": "stix",
+      "pattern": "[file:name = 'AF1.exe' AND file:hashes.'SHA-1' = '7bca3ceb680ad8cb1f3cd0d24d106a28c813ce3b']",
+      "valid_from": "2025-05-13T00:00:00Z"
+    },
+    {
+      "type": "indicator",
+      "spec_version": "2.1",
+      "id": "indicator--file-iconxdll",
+      "created": "2025-11-25T12:17:02Z",
+      "modified": "2025-11-25T12:17:02Z",
+      "created_by_ref": "identity--c3f8f72e-2d66-4f7a-bf4e-2c733b700001",
+      "name": "Support DLL IconX.dll (SHA1)",
+      "indicator_types": [
+        "malicious-activity",
+        "file-hash-watchlist"
+      ],
+      "pattern_type": "stix",
+      "pattern": "[file:name = 'IconX.dll' AND file:hashes.'SHA-1' = 'cf290cd98b3779e1e6b58441505d4dd411cdb541']",
+      "valid_from": "2025-05-13T00:00:00Z"
+    },
+    {
+      "type": "indicator",
+      "spec_version": "2.1",
+      "id": "indicator--file-dx0dll",
+      "created": "2025-11-25T12:17:03Z",
+      "modified": "2025-11-25T12:17:03Z",
+      "created_by_ref": "identity--c3f8f72e-2d66-4f7a-bf4e-2c733b700001",
+      "name": "Support DLL dx0.dll (SHA1)",
+      "indicator_types": [
+        "malicious-activity",
+        "file-hash-watchlist"
+      ],
+      "pattern_type": "stix",
+      "pattern": "[file:name = 'dx0.dll' AND file:hashes.'SHA-1' = '3748ccd9f716e4668af8672e037b5729074e36c1']",
+      "valid_from": "2025-05-13T00:00:00Z"
+    },
+    {
+      "type": "indicator",
+      "spec_version": "2.1",
+      "id": "indicator--file-directguidll",
+      "created": "2025-11-25T12:17:04Z",
+      "modified": "2025-11-25T12:17:04Z",
+      "created_by_ref": "identity--c3f8f72e-2d66-4f7a-bf4e-2c733b700001",
+      "name": "Support DLL DirectGUI.dll (SHA1)",
+      "indicator_types": [
+        "malicious-activity",
+        "file-hash-watchlist"
+      ],
+      "pattern_type": "stix",
+      "pattern": "[file:name = 'DirectGUI.dll' AND file:hashes.'SHA-1' = '5e5f646f6b1f67519cabff1451aa3427eb46989f']",
+      "valid_from": "2025-05-13T00:00:00Z"
+    }
+  ]
+}

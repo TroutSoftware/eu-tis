@@ -1,0 +1,141 @@
+{
+  "version": "1.0",
+  "name": "ClearFake Campaign Attack Flow",
+  "description": "Attack flow describing the ClearFake campaign based on observed behavior from compromised websites through user-assisted execution and downstream payload activity.",
+  "objects": [
+    {
+      "id": "flow-1",
+      "type": "attack-flow",
+      "name": "ClearFake Infection Chain"
+    },
+    {
+      "id": "action-1",
+      "type": "attack-action",
+      "name": "Drive-by Compromise",
+      "description": "The victim visits a legitimate but compromised website hosting malicious ClearFake JavaScript.",
+      "technique_id": "T1189"
+    },
+    {
+      "id": "action-2",
+      "type": "attack-action",
+      "name": "Malicious JavaScript Execution",
+      "description": "Malicious JavaScript executes in the victim's browser to profile the environment and redirect the user to attacker-controlled content.",
+      "technique_id": "T1059.007"
+    },
+    {
+      "id": "action-2b",
+      "type": "attack-action",
+      "name": "Smart Contract-Based Stage Retrieval",
+      "description": "The injected JavaScript interacts with a Binance Smart Chain (BSC) smart contract, leveraging the blockchain as a web-based service (MITRE ATT&CK T1102) to retrieve staged configuration data. The smart contract functions as a decentralized staging mechanism that provides next-stage instructions, which may include URLs or command sequences used in subsequent payload delivery. This design enables attackers to dynamically update delivery logic without modifying the compromised website itself.",
+      "technique_id": "T1102"
+    },
+    {
+      "id": "action-3",
+      "type": "attack-action",
+      "name": "User-Assisted Execution Preparation",
+      "description": "The victim is redirected to an attacker-controlled page presenting a fake browser update or verification prompt.",
+      "technique_id": "T1059.007"
+    },
+    {
+      "id": "action-4",
+      "type": "attack-action",
+      "name": "User-Assisted Execution",
+      "description": "The victim manually copies and executes attacker-provided commands, transitioning the attack from browser-based activity to endpoint execution.",
+      "technique_id": "T1204"
+    },
+    {
+      "id": "action-5",
+      "type": "attack-action",
+      "name": "Command Execution via Windows Command Shell",
+      "description": "The user-executed command invokes cmd.exe to initiate follow-on malicious activity.",
+      "technique_id": "T1059.003"
+    },
+    {
+      "id": "action-6",
+      "type": "attack-action",
+      "name": "Encoded PowerShell Execution",
+      "description": "PowerShell is executed with encoded commands to download and execute additional payloads.",
+      "technique_id": "T1059.001"
+    },
+    {
+      "id": "action-7",
+      "type": "attack-action",
+      "name": "Payload Download",
+      "description": "Following user-assisted execution, the ClearFake framework retrieves and delivers secondary malware families from attacker-controlled or third-party infrastructure. Observed payloads include Amadey, SocGholish, RaccoonStealer, StealC, HijackLoader, SystemBC, and LummaStealer. Subsequent credential theft, persistence, and command-and-control activity are performed by the delivered malware rather than the ClearFake framework itself.",
+      "technique_id": "T1105"
+    },
+    {
+      "id": "action-8",
+      "type": "attack-action",
+      "name": "Command Obfuscation",
+      "description": "Commands and scripts are obfuscated to evade detection and hinder analysis.",
+      "technique_id": "T1027.010"
+    },
+    {
+      "id": "action-9",
+      "type": "attack-action",
+      "name": "Masquerading",
+      "description": "Malicious payloads and execution artifacts masquerade as legitimate software components.",
+      "technique_id": "T1036"
+    },
+    {
+      "id": "action-10",
+      "type": "attack-action",
+      "name": "Sandbox / Virtualization Evasion",
+      "description": "The payload performs system and virtualization checks to evade sandbox or automated analysis environments.",
+      "technique_id": "T1497.001"
+    },
+    {
+      "id": "action-11",
+      "type": "attack-action",
+      "name": "WMI-Based Environment Checks",
+      "description": "Windows Management Instrumentation queries are used as part of system and environment checks prior to further execution.",
+      "technique_id": "T1047"
+    },
+    {
+      "id": "action-12",
+      "type": "attack-action",
+      "name": "Local Groups Discovery",
+      "description": "The malware enumerates local user groups and system accounts.",
+      "technique_id": "T1069.001"
+    },
+    {
+      "id": "action-13",
+      "type": "attack-action",
+      "name": "Browser Credential Collection",
+      "description": "Downstream payload accesses browser credential stores to extract saved credentials and session data.",
+      "technique_id": "T1555.003"
+    },
+    {
+      "id": "action-14",
+      "type": "attack-action",
+      "name": "Command and Control over Web Protocols",
+      "description": "The compromised host communicates with command-and-control infrastructure over HTTP or HTTPS.",
+      "technique_id": "T1071.001"
+    },
+    {
+      "id": "action-15",
+      "type": "attack-action",
+      "name": "Persistence via Scheduled Task",
+      "description": "Persistence is established through the creation of scheduled tasks.",
+      "technique_id": "T1053.005"
+    }
+  ],
+  "links": [
+    { "source": "action-1", "target": "action-2" },
+    { "source": "action-2", "target": "action-2b" },
+    { "source": "action-2b", "target": "action-3" },
+    { "source": "action-3", "target": "action-4" },
+    { "source": "action-4", "target": "action-5" },
+    { "source": "action-5", "target": "action-6" },
+    { "source": "action-6", "target": "action-7" },
+    { "source": "action-7", "target": "action-8" },
+    { "source": "action-8", "target": "action-9" },
+    { "source": "action-9", "target": "action-10" },
+    { "source": "action-10", "target": "action-11" },
+    { "source": "action-11", "target": "action-12" },
+    { "source": "action-12", "target": "action-13" },
+    { "source": "action-13", "target": "action-14" },
+    { "source": "action-14", "target": "action-15" }
+  ]
+}

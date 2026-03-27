@@ -1,0 +1,54 @@
+title: Suspicious PowerShell Download Cradle From Run Dialog (Lumma-Like)
+id: 8c2f8a4b-4f3b-4e5b-9a3c-ps-run-lumma
+description: |
+  Detects a hidden PowerShell process launched from Explorer (Run dialog)
+  that downloads and executes code from a remote URL, similar to Lumma
+  fake CAPTCHA campaigns.
+status: experimental
+author: Adelina Comanescu
+date: 2025/11/25
+logsource:
+  product: windows
+  category: process_creation
+
+detection:
+  selection_base:
+    Image|endswith: '\powershell.exe'
+    ParentImage|endswith: '\Explorer.EXE'
+
+  selection_cli_hidden:
+    CommandLine|contains:
+      - '-WindowStyle Hidden'
+      - '-NoProfile'
+
+  selection_cli_download:
+    CommandLine|contains:
+      - 'http'
+      - 'https'
+      - 'iex'
+      - 'irm'
+      - 'Invoke-RestMethod'
+
+  selection_lumma_specific:
+    CommandLine|contains:
+      - '2no.co'
+      - '2OArm3'
+
+  condition: selection_base and selection_cli_hidden and (selection_cli_download or selection_lumma_specific)
+
+fields:
+  - UtcTime
+  - Computer
+  - User
+  - Image
+  - CommandLine
+  - ParentImage
+falsepositives:
+  - Rare administrative scripts manually executed from the Run dialog that
+    use PowerShell download cradles (should be reviewed case by case).
+level: high
+tags:
+  - attack.execution
+  - attack.t1059.001
+  - attack.t1204
+  - attack.t1189

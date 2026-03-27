@@ -1,0 +1,5 @@
+timestamp,src_ip,host,url,action,notes
+2025-05-13T09:15:10Z,10.10.5.23,871549.eliteeyeview.co,/,BLOCK,Malware/Phishing category
+2025-05-13T09:15:18Z,10.10.5.23,657.s3.fr-par.scw.cloud,/captcha,ALLOW,Unknown domain
+2025-05-13T09:16:10Z,10.10.5.23,blameaowi.run,/twiu,ALLOW,SSL tunnel (HTTPS)
+2025-05-13T09:16:20Z,10.10.5.23,flowerexju.bet,/lanz,ALLOW,SSL tunnel (HTTPS)
