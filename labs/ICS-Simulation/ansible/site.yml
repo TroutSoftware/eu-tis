@@ -1,0 +1,109 @@
+---
+- name: Baseline packages for all lab nodes
+  hosts: all
+  gather_facts: true
+  become: true
+  tasks:
+    - name: Install common troubleshooting packages
+      ansible.builtin.apt:
+        name:
+          - ca-certificates
+          - curl
+          - jq
+          - netcat-openbsd
+        state: present
+        update_cache: true
+        cache_valid_time: 3600
+
+- name: WAN test host tooling
+  hosts: wan_test
+  gather_facts: false
+  become: true
+  tasks:
+    - name: Install WAN validation tools
+      ansible.builtin.apt:
+        name:
+          - iputils-ping
+          - traceroute
+          - tcpdump
+        state: present
+        update_cache: true
+        cache_valid_time: 3600
+
+- name: IT workstation tooling
+  hosts: it_workstations
+  gather_facts: false
+  become: true
+  tasks:
+    - name: Install IT workstation tools
+      ansible.builtin.apt:
+        name:
+          - iputils-ping
+          - traceroute
+          - tcpdump
+          - smbclient
+        state: present
+        update_cache: true
+        cache_valid_time: 3600
+
+- name: Jump host tooling
+  hosts: jump_hosts
+  gather_facts: false
+  become: true
+  tasks:
+    - name: Install SSH client tools on jump host
+      ansible.builtin.apt:
+        name:
+          - openssh-client
+        state: present
+        update_cache: true
+        cache_valid_time: 3600
+
+- name: Configure router and firewall
+  hosts: router_firewall
+  gather_facts: false
+  become: true
+  roles:
+    - router_firewall
+
+- name: Configure file server
+  hosts: file_servers
+  gather_facts: false
+  become: true
+  roles:
+    - file_server
+
+- name: Install activity runner
+  hosts: activity_agents
+  gather_facts: false
+  become: true
+  roles:
+    - activity_agent
+
+- name: Configure process simulator
+  hosts: process_simulators
+  gather_facts: false
+  become: true
+  roles:
+    - process_sim
+
+- name: Configure PLC simulator
+  hosts: plc
+  gather_facts: false
+  become: true
+  roles:
+    - plc_sim
+
+- name: Configure SCADA poller and API
+  hosts: scada
+  gather_facts: false
+  become: true
+  roles:
+    - scada_host
+
+- name: Configure HMI
+  hosts: hmi
+  gather_facts: false
+  become: true
+  roles:
+    - hmi_host

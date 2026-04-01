@@ -1,0 +1,46 @@
+---
+- name: Create PLC simulator directories
+  ansible.builtin.file:
+    path: "{{ item }}"
+    state: directory
+    owner: root
+    group: root
+    mode: "0755"
+  loop:
+    - /opt/ics/plc
+    - /var/lib/ics-plc
+
+- name: Install PLC simulator
+  ansible.builtin.copy:
+    src: plc_sim.py
+    dest: /opt/ics/plc/plc_sim.py
+    owner: root
+    group: root
+    mode: "0755"
+  register: plc_sim_script
+
+- name: Install PLC simulator systemd unit
+  ansible.builtin.template:
+    src: ics-plc.service.j2
+    dest: /etc/systemd/system/ics-plc.service
+    owner: root
+    group: root
+    mode: "0644"
+  register: plc_sim_unit
+
+- name: Reload systemd after PLC simulator unit changes
+  ansible.builtin.systemd:
+    daemon_reload: true
+  when: plc_sim_unit.changed
+
+- name: Ensure PLC simulator service is enabled and started
+  ansible.builtin.systemd:
+    name: ics-plc.service
+    enabled: true
+    state: started
+
+- name: Restart PLC simulator when code or unit changes
+  ansible.builtin.systemd:
+    name: ics-plc.service
+    state: restarted
+  when: plc_sim_script.changed or plc_sim_unit.changed
