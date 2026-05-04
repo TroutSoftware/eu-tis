@@ -14,3 +14,5 @@ For confidentiality and IP reasons, we do not accept recording or artifacts with
 
 If you want to contribute, please open an issue in the issue tracker with our “killchain submission” template.
 Then submit a PR with the artifacts required to reproduce the killchain (including scripts, configuration templates, …). We will then provide you with a link to upload the resulting artifacts.
+
+You have a documentation for Submission process in /eu-tis/killchains/SUBMISSION_PROCESS.md if not clear, do a request in issue.
