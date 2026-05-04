@@ -19,3 +19,7 @@ Explain the situation in 2/3 paragraphs
 ## References
 
 Include external sources to support the killchain
+
+## Comments or questions
+
+If you have any comments or questions about your killchain, feel free to ask here and we'll work through the issue together 
