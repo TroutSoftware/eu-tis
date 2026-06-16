@@ -231,33 +231,52 @@ resource "incus_instance" "dvwa" {
     }
   }
 
-  config = {
-    "user.user-data" = <<EOF
+config = {
+  "cloud-init.user-data" = <<EOF
 #cloud-config
 package_update: true
 packages:
   - apache2
+  - libapache2-mod-php
   - mariadb-server
+  - mariadb-client
   - php
-  - php-mysqli
+  - php-mysql
+  - php-gd
   - wget
   - unzip
+  - curl
 
 bootcmd:
   - rm -f /etc/resolv.conf
   - echo "nameserver 198.18.200.1" > /etc/resolv.conf
 
 runcmd:
-  # Configuration DVWA
-  - systemctl enable apache2 mariadb
-  - systemctl start apache2 mariadb
-  - mysql -e "CREATE DATABASE dvwa; CREATE USER 'dvwa'@'localhost' IDENTIFIED BY 'p@ssw0rd'; GRANT ALL ON dvwa.* TO 'dvwa'@'localhost';"
+  - systemctl enable --now apache2 mariadb
+
+  - mysql -e "CREATE DATABASE IF NOT EXISTS dvwa;"
+  - mysql -e "CREATE USER IF NOT EXISTS 'dvwa'@'localhost' IDENTIFIED BY 'p@ssw0rd';"
+  - mysql -e "CREATE USER IF NOT EXISTS 'dvwa'@'127.0.0.1' IDENTIFIED BY 'p@ssw0rd';"
+  - mysql -e "GRANT ALL PRIVILEGES ON dvwa.* TO 'dvwa'@'localhost';"
+  - mysql -e "GRANT ALL PRIVILEGES ON dvwa.* TO 'dvwa'@'127.0.0.1';"
+  - mysql -e "FLUSH PRIVILEGES;"
+
   - wget -O /tmp/dvwa.zip https://github.com/digininja/DVWA/archive/refs/heads/master.zip
   - unzip /tmp/dvwa.zip -d /var/www/html/
   - mv /var/www/html/DVWA-master /var/www/html/dvwa
+
+  - cp /var/www/html/dvwa/config/config.inc.php.dist /var/www/html/dvwa/config/config.inc.php
+  - sed -i "s/\$_DVWA\\[ 'db_server' \\]   = '127.0.0.1';/\$_DVWA[ 'db_server' ]   = '127.0.0.1';/" /var/www/html/dvwa/config/config.inc.php
+
+  - a2enmod rewrite
+  - phpenmod mysqli pdo_mysql gd || true
+
   - chown -R www-data:www-data /var/www/html/dvwa
+  - chmod -R 755 /var/www/html/dvwa
+  - chmod -R 777 /var/www/html/dvwa/hackable/uploads /var/www/html/dvwa/config
+
+  - systemctl restart apache2
 EOF
-  }
 }
 
 # Target (LAN) #
