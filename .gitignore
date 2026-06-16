@@ -1,15 +1,70 @@
+# Local project artifacts
 command.txt
 web/inventory/
 inventory/
-lab/**/*.tfstate
-lab/**/*.tfstate.backup
-lab/trout-image
-killchains/**/samples
-terraform.tfstate
-terraform.tfstate.backup
-zip
-lab/.terraform/
+zip/
+
+# Local assistant workspace
+.codex
+.codex/
+
+# OS / editors
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+env/
 tools/Killchain2Stix/myenv/
-lab/current-experience/incus-setup-lab.tf
-lab/current-experience/
-lab/.terraform.lock.hcl
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# Logs / temporary files / archives
+*.log
+*.tmp
+*.bak
+*.tar
+*.tar.gz
+*.7z
+*.zip
+
+# Secrets / local configuration
+.env
+.env.*
+!.env.example
+!.env.template
+*.pem
+*.key
+*.crt
+*.p12
+*.pfx
+id_rsa
+id_ed25519
+known_hosts
+
+# Terraform / labs runtime state
+**/.terraform/
+.terraform.lock.hcl
+terraform.tfstate
+terraform.tfstate.*
+crash.log
+crash.*.log
+*.tfvars
+*.tfvars.json
+override.tf
+override.tf.json
+*_override.tf
+*_override.tf.json
+labs/trout-image/
+labs/current-experience/
+
+# Project sample payloads generated locally
+killchains/**/samples/

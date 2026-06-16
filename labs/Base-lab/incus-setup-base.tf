@@ -278,6 +278,7 @@ runcmd:
   - systemctl restart apache2
 EOF
 }
+}
 
 # Target (LAN) #
 resource "incus_instance" "target" {
@@ -355,4 +356,3 @@ resource "incus_instance" "windows" {
     }
   }
 }
-
