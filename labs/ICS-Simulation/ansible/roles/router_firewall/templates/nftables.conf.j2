@@ -1,0 +1,58 @@
+#!/usr/sbin/nft -f
+
+flush ruleset
+
+define wan_if = "eth0"
+define it_if = "eth1"
+define dmz_if = "eth2"
+define ops_if = "eth3"
+define cell_if = "eth4"
+
+table inet filter {
+  chain input {
+    type filter hook input priority filter; policy drop;
+
+    iif "lo" accept
+    ct state established,related accept
+    ct state invalid drop
+
+    ip protocol icmp accept
+    ip6 nexthdr ipv6-icmp accept
+
+    # Management and resolver access to the router itself.
+    tcp dport 22 accept
+    udp dport 53 accept
+    tcp dport 53 accept
+  }
+
+  chain forward {
+    type filter hook forward priority filter; policy drop;
+
+    ct state established,related accept
+    ct state invalid drop
+
+    # Internal zone egress to WAN is allowed and masqueraded in the nat table.
+    iifname { $it_if, $dmz_if, $ops_if, $cell_if } oifname $wan_if accept
+
+    # Allowed cross-zone flows.
+    iifname $it_if oifname $dmz_if tcp dport 22 accept
+    iifname $dmz_if oifname $ops_if tcp dport { 22, 443 } accept
+    iifname $ops_if oifname $cell_if tcp dport 502 accept
+    iifname $ops_if oifname $dmz_if tcp dport 1883 accept
+
+    # Explicitly deny WAN initiated traffic toward internal zones.
+    iifname $wan_if oifname { $it_if, $dmz_if, $ops_if, $cell_if } drop
+  }
+
+  chain output {
+    type filter hook output priority filter; policy accept;
+  }
+}
+
+table ip nat {
+  chain postrouting {
+    type nat hook postrouting priority srcnat; policy accept;
+
+    oifname $wan_if ip saddr { 198.18.10.0/24, 198.18.20.0/24, 198.18.30.0/24, 198.18.40.0/24 } masquerade
+  }
+}

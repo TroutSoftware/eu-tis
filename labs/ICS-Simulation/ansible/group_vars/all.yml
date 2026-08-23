@@ -1,0 +1,25 @@
+---
+ansible_user: lab
+ansible_become: true
+
+ics_router_ipv4: 198.18.110.254
+ics_router_dns_upstreams:
+  - 1.1.1.1
+  - 9.9.9.9
+
+ics_process_api_url: http://198.18.40.20:8080
+ics_process_state_url: http://198.18.40.20:8080/state
+ics_process_command_url: http://198.18.40.20:8080/command
+
+ics_plc_host: 198.18.40.10
+ics_plc_port: 502
+
+ics_scada_api_url: http://198.18.30.10:8081
+ics_scada_api_port: 8081
+ics_scada_poll_interval: 2.0
+
+ics_hmi_bind: 0.0.0.0
+ics_hmi_port: 8080
+
+ics_mqtt_host: "{{ lookup('env', 'MQTT_HOST') | default('', true) }}"
+ics_mqtt_port: 1883

@@ -1,0 +1,43 @@
+---
+- name: Create SCADA directories
+  ansible.builtin.file:
+    path: /opt/ics/scada
+    state: directory
+    owner: root
+    group: root
+    mode: "0755"
+
+- name: Install SCADA API service
+  ansible.builtin.copy:
+    src: scada_api.py
+    dest: /opt/ics/scada/scada_api.py
+    owner: root
+    group: root
+    mode: "0755"
+  register: scada_api_script
+
+- name: Install SCADA systemd unit
+  ansible.builtin.template:
+    src: ics-scada.service.j2
+    dest: /etc/systemd/system/ics-scada.service
+    owner: root
+    group: root
+    mode: "0644"
+  register: scada_api_unit
+
+- name: Reload systemd after SCADA unit changes
+  ansible.builtin.systemd:
+    daemon_reload: true
+  when: scada_api_unit.changed
+
+- name: Ensure SCADA API service is enabled and started
+  ansible.builtin.systemd:
+    name: ics-scada.service
+    enabled: true
+    state: started
+
+- name: Restart SCADA API service when code or unit changes
+  ansible.builtin.systemd:
+    name: ics-scada.service
+    state: restarted
+  when: scada_api_script.changed or scada_api_unit.changed

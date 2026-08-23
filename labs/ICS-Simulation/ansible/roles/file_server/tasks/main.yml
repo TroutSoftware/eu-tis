@@ -1,0 +1,41 @@
+---
+- name: Install Samba
+  ansible.builtin.apt:
+    name:
+      - samba
+    state: present
+    update_cache: true
+    cache_valid_time: 3600
+
+- name: Ensure Samba share directories exist
+  ansible.builtin.file:
+    path: "/srv/ics-shares/{{ item }}"
+    state: directory
+    owner: lab
+    group: lab
+    mode: "0775"
+  loop:
+    - Engineering
+    - Operations
+    - Backups
+
+- name: Deploy Samba configuration
+  ansible.builtin.template:
+    src: smb.conf.j2
+    dest: /etc/samba/smb.conf
+    owner: root
+    group: root
+    mode: "0644"
+  register: samba_config
+
+- name: Ensure smbd is enabled and started
+  ansible.builtin.service:
+    name: smbd
+    enabled: true
+    state: started
+
+- name: Restart smbd when configuration changes
+  ansible.builtin.service:
+    name: smbd
+    state: restarted
+  when: samba_config.changed

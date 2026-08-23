@@ -1,0 +1,15 @@
+[Unit]
+Description=ICS PLC Modbus/TCP simulator
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+Environment=PROCESS_STATE_URL={{ ics_process_state_url }}
+Environment=PROCESS_COMMAND_URL={{ ics_process_command_url }}
+ExecStart=/usr/bin/python3 /opt/ics/plc/plc_sim.py --listen 0.0.0.0 --port {{ ics_plc_port }} --state-file /var/lib/ics-plc/state.json
+Restart=always
+RestartSec=2
+
+[Install]
+WantedBy=multi-user.target

@@ -1,0 +1,14 @@
+[Unit]
+Description=ICS HMI web UI
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+Environment=SCADA_API_URL={{ ics_scada_api_url }}/api/tags
+ExecStart=/usr/bin/python3 /opt/ics/hmi/hmi_server.py --listen {{ ics_hmi_bind }} --port {{ ics_hmi_port }}
+Restart=always
+RestartSec=2
+
+[Install]
+WantedBy=multi-user.target

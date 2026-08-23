@@ -1,0 +1,59 @@
+---
+- name: Install router packages
+  ansible.builtin.apt:
+    name:
+      - dnsmasq
+      - nftables
+    state: present
+    update_cache: true
+    cache_valid_time: 3600
+
+- name: Enable IPv4 forwarding
+  ansible.builtin.sysctl:
+    name: net.ipv4.ip_forward
+    value: "1"
+    state: present
+    sysctl_file: /etc/sysctl.d/99-ics-router.conf
+    reload: true
+
+- name: Deploy nftables policy
+  ansible.builtin.template:
+    src: nftables.conf.j2
+    dest: /etc/nftables.conf
+    owner: root
+    group: root
+    mode: "0644"
+  register: router_nftables
+
+- name: Deploy dnsmasq forwarding config
+  ansible.builtin.template:
+    src: ics-lab-dnsmasq.conf.j2
+    dest: /etc/dnsmasq.d/ics-lab.conf
+    owner: root
+    group: root
+    mode: "0644"
+  register: router_dnsmasq
+
+- name: Ensure nftables is enabled and started
+  ansible.builtin.service:
+    name: nftables
+    enabled: true
+    state: started
+
+- name: Restart nftables when the policy changes
+  ansible.builtin.service:
+    name: nftables
+    state: restarted
+  when: router_nftables.changed
+
+- name: Ensure dnsmasq is enabled and started
+  ansible.builtin.service:
+    name: dnsmasq
+    enabled: true
+    state: started
+
+- name: Restart dnsmasq when the config changes
+  ansible.builtin.service:
+    name: dnsmasq
+    state: restarted
+  when: router_dnsmasq.changed

@@ -1,0 +1,43 @@
+---
+- name: Create HMI directories
+  ansible.builtin.file:
+    path: /opt/ics/hmi
+    state: directory
+    owner: root
+    group: root
+    mode: "0755"
+
+- name: Install HMI service
+  ansible.builtin.copy:
+    src: hmi_server.py
+    dest: /opt/ics/hmi/hmi_server.py
+    owner: root
+    group: root
+    mode: "0755"
+  register: hmi_script
+
+- name: Install HMI systemd unit
+  ansible.builtin.template:
+    src: ics-hmi.service.j2
+    dest: /etc/systemd/system/ics-hmi.service
+    owner: root
+    group: root
+    mode: "0644"
+  register: hmi_unit
+
+- name: Reload systemd after HMI unit changes
+  ansible.builtin.systemd:
+    daemon_reload: true
+  when: hmi_unit.changed
+
+- name: Ensure HMI service is enabled and started
+  ansible.builtin.systemd:
+    name: ics-hmi.service
+    enabled: true
+    state: started
+
+- name: Restart HMI when code or unit changes
+  ansible.builtin.systemd:
+    name: ics-hmi.service
+    state: restarted
+  when: hmi_script.changed or hmi_unit.changed

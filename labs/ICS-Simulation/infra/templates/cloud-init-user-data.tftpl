@@ -1,0 +1,35 @@
+#cloud-config
+hostname: ${hostname}
+fqdn: ${hostname}
+manage_etc_hosts: true
+package_update: true
+package_upgrade: false
+packages:
+%{ for pkg in packages ~}
+  - ${pkg}
+%{ endfor ~}
+users:
+  - default
+  - name: lab
+    shell: /bin/bash
+    groups:
+      - sudo
+    sudo: ALL=(ALL) NOPASSWD:ALL
+    ssh_authorized_keys:
+      - ${ssh_public_key}
+ssh_pwauth: false
+%{ if length(write_files) > 0 ~}
+write_files:
+%{ for item in write_files ~}
+  - path: ${item.path}
+    permissions: "${item.permissions}"
+    content: |
+%{ for line in split("\n", chomp(item.content)) ~}
+      ${line}
+%{ endfor ~}
+%{ endfor ~}
+%{ endif ~}
+runcmd:
+%{ for command in runcmd ~}
+  - [${join(", ", formatlist("\"%s\"", command))}]
+%{ endfor ~}

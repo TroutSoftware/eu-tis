@@ -1,0 +1,13 @@
+[Unit]
+Description=ICS tank process simulator
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+ExecStart=/usr/bin/python3 /opt/ics/process/tank_process.py --listen 0.0.0.0 --port 8080 --state-file /var/lib/ics-process/state.json
+Restart=always
+RestartSec=2
+
+[Install]
+WantedBy=multi-user.target

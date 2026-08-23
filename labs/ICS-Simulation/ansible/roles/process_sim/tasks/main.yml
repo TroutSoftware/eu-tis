@@ -1,0 +1,46 @@
+---
+- name: Create process simulator directories
+  ansible.builtin.file:
+    path: "{{ item }}"
+    state: directory
+    owner: root
+    group: root
+    mode: "0755"
+  loop:
+    - /opt/ics/process
+    - /var/lib/ics-process
+
+- name: Install process simulator
+  ansible.builtin.copy:
+    src: tank_process.py
+    dest: /opt/ics/process/tank_process.py
+    owner: root
+    group: root
+    mode: "0755"
+  register: process_sim_script
+
+- name: Install process simulator systemd unit
+  ansible.builtin.template:
+    src: ics-process.service.j2
+    dest: /etc/systemd/system/ics-process.service
+    owner: root
+    group: root
+    mode: "0644"
+  register: process_sim_unit
+
+- name: Reload systemd after process simulator unit changes
+  ansible.builtin.systemd:
+    daemon_reload: true
+  when: process_sim_unit.changed
+
+- name: Ensure process simulator service is enabled and started
+  ansible.builtin.systemd:
+    name: ics-process.service
+    enabled: true
+    state: started
+
+- name: Restart process simulator when code or unit changes
+  ansible.builtin.systemd:
+    name: ics-process.service
+    state: restarted
+  when: process_sim_script.changed or process_sim_unit.changed

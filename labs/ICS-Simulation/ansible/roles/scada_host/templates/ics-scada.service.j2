@@ -1,0 +1,18 @@
+[Unit]
+Description=ICS SCADA poller and API
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+Environment=PLC_HOST={{ ics_plc_host }}
+Environment=PLC_PORT={{ ics_plc_port }}
+Environment=MQTT_HOST={{ ics_mqtt_host }}
+Environment=MQTT_PORT={{ ics_mqtt_port }}
+Environment=POLL_INTERVAL={{ ics_scada_poll_interval }}
+ExecStart=/usr/bin/python3 /opt/ics/scada/scada_api.py --listen 0.0.0.0 --port {{ ics_scada_api_port }}
+Restart=always
+RestartSec=2
+
+[Install]
+WantedBy=multi-user.target

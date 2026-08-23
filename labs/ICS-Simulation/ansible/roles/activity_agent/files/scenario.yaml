@@ -1,0 +1,16 @@
+steps:
+  - name: validate_jump_host_ssh
+    action: tcp_check
+    host: 198.18.20.10
+    port: 22
+    expect: open
+
+  - name: confirm_direct_cell_access_is_blocked
+    action: tcp_check
+    host: 198.18.40.10
+    port: 502
+    expect: closed
+
+  - name: pause_between_steps
+    action: sleep
+    seconds: 2

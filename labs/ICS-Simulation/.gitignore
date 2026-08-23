@@ -1,0 +1,5 @@
+.terraform/
+.terraform.lock.hcl
+infra_outputs.json
+*.retry
+ansible/inventory/inventory.yml
